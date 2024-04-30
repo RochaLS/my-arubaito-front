@@ -2,7 +2,7 @@ import { Center, Flex, Heading, Highlight, Avatar } from "@chakra-ui/react";
 
 export function Navbar() {
   return (
-    <Flex m={5} h={50} justify="space-between">
+    <Flex boxShadow="sm" bg="white" p={10} h={50} justify="space-between">
       <Center>
         <Heading lineHeight="tall" size="lg">
           <Highlight

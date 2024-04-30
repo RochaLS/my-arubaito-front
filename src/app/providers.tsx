@@ -1,7 +1,13 @@
 "use client";
 
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Box } from "@chakra-ui/react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <ChakraProvider>{children}</ChakraProvider>;
+  return (
+    <ChakraProvider>
+      <Box bg="gray.100" minH="100vh">
+        {children}
+      </Box>
+    </ChakraProvider>
+  );
 }
