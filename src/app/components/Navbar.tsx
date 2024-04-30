@@ -1,0 +1,21 @@
+import { Center, Flex, Heading, Highlight, Avatar } from "@chakra-ui/react";
+
+export function Navbar() {
+  return (
+    <Flex m={5} h={50} justify="space-between">
+      <Center>
+        <Heading lineHeight="tall" size="lg">
+          <Highlight
+            query="Arubaito."
+            styles={{ px: "2", py: "1", rounded: "full", bg: "teal.100" }}
+          >
+            My Arubaito.
+          </Highlight>
+        </Heading>
+      </Center>
+      <Center>
+        <Avatar />
+      </Center>
+    </Flex>
+  );
+}
