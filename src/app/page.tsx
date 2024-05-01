@@ -6,7 +6,7 @@ import { OverviewBox } from "./components/OverviewBox";
 import { Center, Heading, Box, Flex } from "@chakra-ui/react";
 import { ShiftBox } from "./components/ShiftBox";
 import { ListBox } from "./components/ListBox";
-import { Calendar } from "./components/Calendar";
+import MyCalendar from "./components/Calendar";
 
 export default function Page() {
   return (
@@ -24,7 +24,9 @@ export default function Page() {
             </Box>
             <ListBox />
           </Flex>
-          <Calendar />
+          <Box margin={10} h={800}>
+            <MyCalendar />
+          </Box>
         </Box>
       </Center>
     </>
