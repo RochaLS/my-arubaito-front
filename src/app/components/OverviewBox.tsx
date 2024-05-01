@@ -9,11 +9,9 @@ export function OverviewBox() {
       justify="space-around"
       p={5}
       m={10}
-      minH={300}
-      maxW="50%"
       borderRadius={10}
     >
-      <Heading textAlign="center" size="xl">
+      <Heading mb={5} textAlign="center" size="xl">
         Prediction for upcoming weeks 🤑
       </Heading>
       <Text fontSize="3xl">Total gross pay: $750.00</Text>
