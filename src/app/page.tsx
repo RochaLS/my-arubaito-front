@@ -24,7 +24,7 @@ export default function Page() {
             </Box>
             <ListBox />
           </Flex>
-          <Box margin={10} h={800}>
+          <Box boxShadow="md" margin={10} h={800}>
             <MyCalendar />
           </Box>
         </Box>
