@@ -1,0 +1,14 @@
+/* CalendarToolbar.module.css */
+
+/* CalendarToolbar.module.css */
+
+.rbc-toolbar button {
+  background-color: transparent; /* Set the default background color */
+  color: teal; /* Set the default text color */
+  border: none; /* Remove the border */
+}
+
+.rbc-toolbar button.rbc-active {
+  background-color: teal; /* Set the background color when selected */
+  color: white; /* Set the text color when selected */
+}

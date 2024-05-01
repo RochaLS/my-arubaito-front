@@ -35,7 +35,6 @@ function MyCalendar() {
   const [view, setView] = useState(Views.MONTH);
   const [date, setDate] = useState(new Date());
 
-  // do this
   const { defaultDate } = useMemo(
     () => ({
       defaultDate: new Date(),
