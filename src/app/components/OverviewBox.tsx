@@ -31,7 +31,7 @@ export function OverviewBox() {
           See details
         </Button>
         <Icon
-          color="teal"
+          color="teal.500"
           boxSize={10}
           as={LuInfo}
           display={["block", "none"]}

@@ -28,7 +28,7 @@ export function ShiftBox() {
       </Text>
       <Text boxShadow="sm" fontSize="2xl">
         Money value:{" "}
-        <Text color="teal" as="span">
+        <Text color="teal.500" as="span">
           $98.00
         </Text>
       </Text>
