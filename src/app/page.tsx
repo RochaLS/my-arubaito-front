@@ -14,17 +14,22 @@ export default function Page() {
       <Navbar />
       <Center>
         <Box minW="80%">
-          <Heading m={10} textAlign="center">
+          <Heading m={[5, 10]} textAlign="center">
             Dashboard
           </Heading>
-          <Flex>
-            <Box w="70%" minH={300}>
+          <Flex flexDir={["column", "row"]}>
+            <Box w={["100%", "90%", "90%", "70%"]} minH={300}>
               <OverviewBox />
               <ShiftBox />
             </Box>
             <ListBox />
           </Flex>
-          <Box boxShadow="md" margin={10} h={800}>
+          <Box
+            boxShadow="md"
+            margin={10}
+            h={[0, 400, 500, 800]}
+            display={["none", "block"]}
+          >
             <MyCalendar />
           </Box>
         </Box>
