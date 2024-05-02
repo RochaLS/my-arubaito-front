@@ -12,7 +12,7 @@ import { LuInfo } from "react-icons/lu";
 export function OverviewBox() {
   return (
     <Flex
-      boxShadow="md"
+      boxShadow="sm"
       bg="white"
       direction="column"
       justify="space-around"

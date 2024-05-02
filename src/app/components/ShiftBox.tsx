@@ -3,7 +3,7 @@ import { Center, Box, Heading, Text, Flex, Button } from "@chakra-ui/react";
 export function ShiftBox() {
   return (
     <Flex
-      boxShadow="md"
+      boxShadow="sm"
       bg="white"
       direction="column"
       justify="space-around"

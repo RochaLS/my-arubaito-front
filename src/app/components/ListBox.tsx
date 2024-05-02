@@ -6,7 +6,7 @@ export function ListBox() {
   return (
     <Box
       borderRadius={10}
-      boxShadow="md"
+      boxShadow="sm"
       bg="white"
       w={["90%", "70", "60%", "50%"]}
       m={[5, 5, 5, 10]}
