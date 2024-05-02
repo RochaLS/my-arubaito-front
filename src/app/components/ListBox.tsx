@@ -4,7 +4,7 @@ import { ListShiftCard } from "./ListShiftCard";
 
 export function ListBox() {
   return (
-    <Box boxShadow="md" bg="white" w="50%" m={10} p={5}>
+    <Box borderRadius={10} boxShadow="md" bg="white" w="50%" m={10} p={5}>
       <Heading textAlign="center">Upcoming shifts 📆</Heading>
       <ListShiftCard />
       <ListShiftCard />
