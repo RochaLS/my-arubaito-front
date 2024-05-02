@@ -31,7 +31,13 @@ export function AuthForm({ title, fields, onSubmit, formType }: AuthFormProps) {
         {title}
       </Heading>
       {fields.map((field) => (
-        <Input key={field.name} size="lg" mb={5} {...field} />
+        <Input
+          focusBorderColor="teal.500"
+          key={field.name}
+          size="lg"
+          mb={5}
+          {...field}
+        />
       ))}
       {formType === "signup" && (
         <Select placeholder="Select Province" size="lg" mb={5}>
