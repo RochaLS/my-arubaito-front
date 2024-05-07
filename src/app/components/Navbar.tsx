@@ -1,4 +1,14 @@
-import { Center, Flex, Heading, Highlight, Avatar } from "@chakra-ui/react";
+import {
+  Center,
+  Flex,
+  Heading,
+  Highlight,
+  Avatar,
+  Button,
+  Icon,
+} from "@chakra-ui/react";
+
+import { LuSettings, LuSunMoon, LuSunrise } from "react-icons/lu";
 
 export function Navbar() {
   return (
@@ -14,7 +24,12 @@ export function Navbar() {
         </Heading>
       </Center>
       <Center>
-        <Avatar />
+        <Button mr={10} variant="link" colorScheme="teal">
+          Jobs
+        </Button>
+        <Button variant="link" colorScheme="teal">
+          Settings
+        </Button>
       </Center>
     </Flex>
   );
