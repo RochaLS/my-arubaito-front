@@ -8,8 +8,6 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-import { LuSettings, LuSunMoon, LuSunrise } from "react-icons/lu";
-
 export function Navbar() {
   return (
     <Flex boxShadow="sm" bg="white" p={10} h={50} justify="space-between">
