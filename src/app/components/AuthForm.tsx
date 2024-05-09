@@ -1,4 +1,12 @@
-import { Input, Box, Button, Center, Heading, Select } from "@chakra-ui/react";
+import {
+  Input,
+  Box,
+  Button,
+  Center,
+  Heading,
+  Select,
+  FormControl,
+} from "@chakra-ui/react";
 
 import { provinces } from "../data/provinces";
 
@@ -30,32 +38,34 @@ export function AuthForm({ title, fields, onSubmit, formType }: AuthFormProps) {
       <Heading m={[5, 10]} textAlign="center">
         {title}
       </Heading>
-      {fields.map((field) => (
-        <Input
-          focusBorderColor="teal.500"
-          key={field.name}
-          size="lg"
-          mb={5}
-          {...field}
-        />
-      ))}
-      {formType === "signup" && (
-        <Select placeholder="Select Province" size="lg" mb={5}>
-          {provinces.map((province, index) => (
-            <option key={index} value={province}>
-              {province}
-            </option>
-          ))}
-        </Select>
-      )}
-      <Center flexDir="column" m={10}>
-        <Button m={5} size="lg" colorScheme="teal" w="50%">
-          {primaryButtonText}
-        </Button>
-        <Button size="lg" colorScheme="teal" variant="link">
-          {secondaryButtonText}
-        </Button>
-      </Center>
+      <FormControl>
+        {fields.map((field) => (
+          <Input
+            focusBorderColor="teal.500"
+            key={field.name}
+            size="lg"
+            mb={5}
+            {...field}
+          />
+        ))}
+        {formType === "signup" && (
+          <Select placeholder="Select Province" size="lg" mb={5}>
+            {provinces.map((province, index) => (
+              <option key={index} value={province}>
+                {province}
+              </option>
+            ))}
+          </Select>
+        )}
+        <Center flexDir="column" m={10}>
+          <Button m={5} size="lg" colorScheme="teal" w="50%">
+            {primaryButtonText}
+          </Button>
+          <Button size="lg" colorScheme="teal" variant="link">
+            {secondaryButtonText}
+          </Button>
+        </Center>
+      </FormControl>
     </Box>
   );
 }

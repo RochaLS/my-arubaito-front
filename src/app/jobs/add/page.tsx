@@ -1,5 +1,15 @@
 import { Navbar } from "@/app/components/Navbar";
-import { Box, Heading, Center, Input, Button, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Center,
+  Input,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+} from "@chakra-ui/react";
 
 export default function Page() {
   return (
@@ -24,23 +34,25 @@ export default function Page() {
             <Heading m={[5, 10]} textAlign="center">
               Add job
             </Heading>
-            <Input
-              focusBorderColor="teal.500"
-              size="lg"
-              mb={5}
-              placeholder="Hourly Rate"
-            />
-            <Input
-              focusBorderColor="teal.500"
-              size="lg"
-              mb={5}
-              placeholder="Job title / Company"
-            />
-            <Center>
-              <Button m={5} size="lg" colorScheme="teal" w="50%">
-                Add
-              </Button>
-            </Center>
+            <FormControl>
+              <Input
+                focusBorderColor="teal.500"
+                size="lg"
+                mb={5}
+                placeholder="Hourly Rate"
+              />
+              <Input
+                focusBorderColor="teal.500"
+                size="lg"
+                mb={5}
+                placeholder="Job title / Company"
+              />
+              <Center>
+                <Button m={5} size="lg" colorScheme="teal" w="50%">
+                  Add
+                </Button>
+              </Center>
+            </FormControl>
           </Box>
         </Flex>
       </Box>
