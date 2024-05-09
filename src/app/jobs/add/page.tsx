@@ -40,12 +40,14 @@ export default function Page() {
                 size="lg"
                 mb={5}
                 placeholder="Hourly Rate"
+                type="number"
               />
               <Input
                 focusBorderColor="teal.500"
                 size="lg"
                 mb={5}
                 placeholder="Job title / Company"
+                type="text"
               />
               <Center>
                 <Button m={5} size="lg" colorScheme="teal" w="50%">
