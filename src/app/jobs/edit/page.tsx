@@ -9,7 +9,14 @@ export default function Page() {
   return (
     <>
       <Navbar />
-      <JobForm onSubmit={handleSubmit} />
+      <JobForm
+        onSubmit={handleSubmit}
+        data={{
+          hourlyRate: 22.55,
+          jobTitle: "Sales Associate",
+          jobId: 1,
+        }}
+      />
     </>
   );
 }
