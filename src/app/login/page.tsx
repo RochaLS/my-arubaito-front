@@ -1,22 +1,32 @@
+"use client";
+
 import { Flex, Box } from "@chakra-ui/react";
 import { AuthForm } from "../components/AuthForm";
 import { Logo } from "../components/Logo";
 
+import { FieldValues, SubmitHandler } from "react-hook-form";
+
 export default function Page() {
-  const handleLoginSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Add logic to handle login submission
+  const handleLoginSubmit: SubmitHandler<FieldValues> = (data) => {
+    // Handle form submission here
   };
 
   return (
-    <Box h="100vh">
+    <Box>
       <Flex flexDir="column" w="100%" h="100%" justify="center" align="center">
-        <Logo />
+        <Box>
+          <Logo />
+        </Box>
         <AuthForm
           title="Welcome back."
           fields={[
-            { name: "email", placeholder: "Email" },
-            { name: "password", placeholder: "Password" },
+            { name: "email", placeholder: "Email", label: "Email" },
+            {
+              name: "password",
+              placeholder: "Password",
+              label: "Password",
+              type: "password",
+            },
           ]}
           onSubmit={handleLoginSubmit}
           formType="login"
