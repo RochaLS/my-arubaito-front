@@ -14,6 +14,7 @@ export const signUpSchema = z
       .string()
       .email("Please insert a valid email address.")
       .min(1, "Please provide your email address."),
+    name: z.string().min(1, "Please provide your name."),
     location: z.string().min(1, "Please provide your location."),
     password: z.string().min(1, "Please create your password."),
     confirm_password: z.string().min(1, "Please confirm your password."),

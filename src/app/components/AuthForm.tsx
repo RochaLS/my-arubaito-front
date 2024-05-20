@@ -10,6 +10,7 @@ import {
   FormControl,
   Flex,
   FormLabel,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 
 import { provinces } from "../data/provinces";
@@ -62,38 +63,29 @@ export function AuthForm({ title, fields, onSubmit, formType }: AuthFormProps) {
         {title}
       </Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl>
-          {fields.map((field) => (
-            <Flex key={field.name} flexDirection="column" mb={5}>
-              {errors[field.name] && (
-                <p style={{ color: "red" }}>
-                  {errors[field.name]?.message?.toString()}
-                </p>
-              )}
-              <FormLabel>{field.label}</FormLabel>
-              <Input
-                focusBorderColor="teal.500"
-                key={field.name}
-                size="lg"
-                mb={5}
-                {...field}
-                {...register(field.name)}
-              />
-            </Flex>
-          ))}
+        {fields.map((field) => (
+          <FormControl isInvalid={!!errors[field.name]}>
+            <FormLabel mt={5}>{field.label}</FormLabel>
+            <Input
+              focusBorderColor="teal.500"
+              key={field.name}
+              size="lg"
+              {...field}
+              {...register(field.name)}
+            />
+            <FormErrorMessage>
+              {errors[field.name] && errors[field.name]?.message?.toString()}
+            </FormErrorMessage>
+          </FormControl>
+        ))}
 
-          {formType === "signup" && (
-            <Flex flexDirection="column" mb={5}>
-              {errors.location && (
-                <p style={{ color: "red" }}>
-                  {errors.location.message?.toString()}
-                </p>
-              )}
-              <FormLabel>Location</FormLabel>
+        {formType === "signup" && (
+          <Flex flexDirection="column" mb={5}>
+            <FormControl isInvalid={!!errors.location}>
+              <FormLabel mt={5}>Location</FormLabel>
               <Select
                 placeholder="Select Province"
                 size="lg"
-                mb={5}
                 {...register("location")}
               >
                 {provinces.map((province, index) => (
@@ -102,17 +94,20 @@ export function AuthForm({ title, fields, onSubmit, formType }: AuthFormProps) {
                   </option>
                 ))}
               </Select>
-            </Flex>
-          )}
-          <Center flexDir="column" m={10}>
-            <Button type="submit" m={5} size="lg" colorScheme="teal" w="50%">
-              {primaryButtonText}
-            </Button>
-            <Button size="lg" colorScheme="teal" variant="link">
-              {secondaryButtonText}
-            </Button>
-          </Center>
-        </FormControl>
+              <FormErrorMessage>
+                {errors.location && errors.location.message?.toString()}
+              </FormErrorMessage>
+            </FormControl>
+          </Flex>
+        )}
+        <Center flexDir="column" m={10}>
+          <Button type="submit" m={5} size="lg" colorScheme="teal" w="50%">
+            {primaryButtonText}
+          </Button>
+          <Button size="lg" colorScheme="teal" variant="link">
+            {secondaryButtonText}
+          </Button>
+        </Center>
       </form>
     </Box>
   );
