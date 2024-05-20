@@ -32,7 +32,7 @@ export const jobSchema = z.object({
   jobTitle: z.string().min(1, "Please provide the job title."),
 });
 
-export const shiftValidationSchema = z.object({
+export const shiftSchema = z.object({
   date: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Please insert a valid date.",
   }),
