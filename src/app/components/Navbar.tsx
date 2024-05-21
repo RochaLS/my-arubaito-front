@@ -27,12 +27,16 @@ export function Navbar() {
         </Link>
       </Center>
       <Center>
-        <Button mr={10} variant="link" colorScheme="teal">
-          Jobs
-        </Button>
-        <Button variant="link" colorScheme="teal">
-          Settings
-        </Button>
+        <Link as={NextLink} href="/jobs">
+          <Button mr={10} variant="link" colorScheme="teal">
+            Jobs
+          </Button>
+        </Link>
+        <Link as={NextLink} href="/settings">
+          <Button variant="link" colorScheme="teal">
+            Settings
+          </Button>
+        </Link>
       </Center>
     </Flex>
   );

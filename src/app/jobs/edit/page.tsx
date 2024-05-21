@@ -1,3 +1,5 @@
+"use client";
+
 import { JobForm } from "@/app/components/JobForm";
 import { Navbar } from "@/app/components/Navbar";
 import { FieldValues, SubmitHandler } from "react-hook-form";

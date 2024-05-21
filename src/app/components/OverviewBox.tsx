@@ -25,10 +25,10 @@ export function OverviewBox() {
         Prediction for upcoming weeks 🤑
       </Heading>
       <SkeletonText skeletonHeight={4} noOfLines={4} isLoaded={true}>
-        <Text fontSize="3xl">Total gross pay: $750.00</Text>
-        <Text fontSize="2xl">Number of shifts: 6</Text>
+        <Text fontSize="xl">Total gross pay: $750.00</Text>
+        <Text fontSize="lg">Number of shifts: 6</Text>
         <Flex justify="space-between">
-          <Text fontSize="2xl">Total hours: 64</Text>
+          <Text fontSize="lg">Total hours: 64</Text>
           <Button colorScheme="teal" display={["none", "block"]}>
             See details
           </Button>

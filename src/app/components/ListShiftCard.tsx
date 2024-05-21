@@ -6,12 +6,12 @@ export function ListShiftCard() {
     <Skeleton isLoaded={true}>
       <Flex m={5} boxShadow="sm" justify="space-between" align="center">
         <Box>
-          <Text fontSize="2xl">11/05/2024</Text>
-          <Text color="teal.500" fontSize="2xl">
+          <Text fontSize="xl">11/05/2024</Text>
+          <Text color="teal.500" fontSize="xl">
             2:00pm - 9:00pm
           </Text>
         </Box>
-        <Icon color="teal.500" boxSize={10} as={LuSunrise} />
+        <Icon color="teal.500" boxSize={8} as={LuSunrise} />
       </Flex>
     </Skeleton>
   );

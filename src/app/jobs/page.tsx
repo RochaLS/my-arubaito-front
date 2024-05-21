@@ -15,8 +15,10 @@ import {
   Tfoot,
   Tr,
   useBreakpointValue,
+  Link,
 } from "@chakra-ui/react";
 import { Navbar } from "../components/Navbar";
+import NextLink from "next/link";
 
 export default function Page() {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -55,9 +57,16 @@ export default function Page() {
                   <Box>{job.rate.toFixed(2)}</Box>
                 </Flex>
                 <Flex justify="flex-end">
-                  <Button mr={2} variant="outline" colorScheme="teal" size="sm">
-                    Edit
-                  </Button>
+                  <Link as={NextLink} href="jobs/edit">
+                    <Button
+                      mr={2}
+                      variant="outline"
+                      colorScheme="teal"
+                      size="sm"
+                    >
+                      Edit
+                    </Button>
+                  </Link>
                   <Button variant="outline" colorScheme="red" size="sm">
                     Remove
                   </Button>
@@ -65,9 +74,11 @@ export default function Page() {
               </Flex>
             ))}
             <Center mt={4}>
-              <Button mb={5} colorScheme="teal">
-                Add new job
-              </Button>
+              <Link as={NextLink} href="jobs/add">
+                <Button mb={5} colorScheme="teal">
+                  Add new job
+                </Button>
+              </Link>
             </Center>
           </Box>
         ) : (
@@ -93,9 +104,11 @@ export default function Page() {
                     <Td>{job.title}</Td>
                     <Td isNumeric>{job.rate.toFixed(2)}</Td>
                     <Td>
-                      <Button variant="outline" colorScheme="teal">
-                        Edit
-                      </Button>
+                      <Link as={NextLink} href="jobs/edit">
+                        <Button variant="outline" colorScheme="teal">
+                          Edit
+                        </Button>
+                      </Link>
                     </Td>
                     <Td>
                       <Button variant="outline" colorScheme="red">
@@ -108,7 +121,9 @@ export default function Page() {
               <Tfoot>
                 <Tr>
                   <Th>
-                    <Button colorScheme="teal">Add new job</Button>
+                    <Link as={NextLink} href="jobs/add">
+                      <Button colorScheme="teal">Add new job</Button>
+                    </Link>
                   </Th>
                 </Tr>
               </Tfoot>
