@@ -55,7 +55,7 @@ export function AuthForm({ title, fields, onSubmit, formType }: AuthFormProps) {
       m={[5, 0]}
       p={[5, 10]}
       bgColor="white"
-      w={["100", "70%", "70%", "50%"]}
+      w={["90%", "70%", "70%", "50%"]}
       borderRadius={10}
       boxShadow="sm"
     >

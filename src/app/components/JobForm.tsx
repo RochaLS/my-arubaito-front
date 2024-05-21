@@ -38,7 +38,7 @@ export function JobForm({ data, onSubmit }: JobFormProps) {
   });
 
   return (
-    <Box h="100vh">
+    <Box mt={50}>
       <Flex flexDir="column" w="100%" h="100%" justify="center" align="center">
         <Box
           m={[5, 0]}
