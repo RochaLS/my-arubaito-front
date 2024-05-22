@@ -5,9 +5,10 @@ import {
   Text,
   Flex,
   Button,
-  Icon,
   SkeletonText,
+  Icon,
 } from "@chakra-ui/react";
+
 import { LuInfo } from "react-icons/lu";
 
 export function OverviewBox() {
@@ -29,15 +30,7 @@ export function OverviewBox() {
         <Text fontSize="lg">Number of shifts: 6</Text>
         <Flex justify="space-between">
           <Text fontSize="lg">Total hours: 64</Text>
-          <Button colorScheme="teal" display={["none", "block"]}>
-            See details
-          </Button>
-          <Icon
-            color="teal.500"
-            boxSize={10}
-            as={LuInfo}
-            display={["block", "none"]}
-          />
+          <Button colorScheme="teal">See details</Button>
         </Flex>
       </SkeletonText>
     </Flex>

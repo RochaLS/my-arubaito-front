@@ -11,7 +11,7 @@ export function ListShiftCard() {
             2:00pm - 9:00pm
           </Text>
         </Box>
-        <Icon color="teal.500" boxSize={8} as={LuSunrise} />
+        <LuSunrise size={24} color="teal" />
       </Flex>
     </Skeleton>
   );
