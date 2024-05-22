@@ -1,21 +1,15 @@
-import {
-  Center,
-  Box,
-  Heading,
-  Text,
-  Flex,
-  Button,
-  SkeletonText,
-} from "@chakra-ui/react";
+import { Heading, Text, Flex, SkeletonText } from "@chakra-ui/react";
 import { Shift } from "../util/fetchShifts";
 
 interface ShiftBoxProps {
-  nextShift: Shift;
-  totalHours: number;
-  moneyValue: string;
+  nextShift: {
+    shift: Shift;
+    totalHours: number;
+    moneyValue: string;
+  };
 }
 
-export function ShiftBox({ nextShift, totalHours, moneyValue }: ShiftBoxProps) {
+export function ShiftBox({ nextShift }: ShiftBoxProps) {
   return (
     <Flex
       boxShadow="sm"
@@ -31,21 +25,21 @@ export function ShiftBox({ nextShift, totalHours, moneyValue }: ShiftBoxProps) {
       </Heading>
       <SkeletonText skeletonHeight={4} noOfLines={5} isLoaded={true}>
         <Text boxShadow="sm" fontSize="lg" m={2}>
-          Date: {nextShift.startDate}
+          Date: {nextShift.shift.startDate}
         </Text>
         <Text boxShadow="sm" fontSize="lg" m={2}>
-          Time: {nextShift.startTime} - {nextShift.endTime}
+          Time: {nextShift.shift.startTime} - {nextShift.shift.endTime}
         </Text>
         <Text boxShadow="sm" fontSize="lg" m={2}>
-          Type: {nextShift.shiftType}
+          Type: {nextShift.shift.shiftType}
         </Text>
         <Text boxShadow="sm" fontSize="lg" m={2}>
-          Total hours: {totalHours}
+          Total hours: {nextShift.totalHours}
         </Text>
         <Text boxShadow="sm" fontSize="lg" m={2}>
           Money value:{" "}
           <Text color="teal.500" as="span">
-            {moneyValue}
+            {nextShift.moneyValue}
           </Text>
         </Text>
       </SkeletonText>

@@ -40,9 +40,11 @@ export default async function Page() {
             <Box w={["100%", "90%", "90%", "70%"]} minH={300}>
               <OverviewBox />
               <ShiftBox
-                nextShift={data.nextShift}
-                totalHours={data.nextShiftTotalHours}
-                moneyValue={formatter.format(data.nextShiftGrossPay)}
+                nextShift={{
+                  shift: data.nextShift,
+                  totalHours: data.nextShiftTotalHours,
+                  moneyValue: formatter.format(data.nextShiftGrossPay),
+                }}
               />
             </Box>
             <ListBox />
