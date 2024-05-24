@@ -1,16 +1,16 @@
-// app/page.tsx
-import { Link } from "@chakra-ui/next-js";
-import { Navbar } from "./components/Navbar";
-import { OverviewBox } from "./components/OverviewBox";
+import { Navbar } from "../../../components/Navbar";
+import { OverviewBox } from "../../../components/OverviewBox";
 import { Center, Heading, Box, Flex } from "@chakra-ui/react";
-import { ShiftBox } from "./components/ShiftBox";
-import { ListBox } from "./components/ListBox";
-import MyCalendar from "./components/Calendar";
+import { ShiftBox } from "../../../components/ShiftBox";
+import { ListBox } from "../../../components/ListBox";
+import MyCalendar from "../../../components/Calendar";
 import { IoIosWarning } from "react-icons/io";
 
-export default async function Page() {
+import { useRouter } from "next/navigation";
+
+export default async function Page({ params }: { params: { slug: string } }) {
   const response = await fetch(
-    `http://localhost:8080/api/income/4/1/calculate?date=2024-02-28`,
+    `http://localhost:8080/api/income/${params.slug}/1/calculate?date=2024-02-28`,
     {
       cache: "no-store",
     }

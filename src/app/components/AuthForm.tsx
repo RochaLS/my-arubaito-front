@@ -2,6 +2,7 @@
 
 import {
   Input,
+  Text,
   Box,
   Button,
   Center,
@@ -33,9 +34,16 @@ interface AuthFormProps {
   fields: Field[];
   onSubmit: SubmitHandler<FieldValues>;
   formType: string;
+  authErrorMsg?: string;
 }
 
-export function AuthForm({ title, fields, onSubmit, formType }: AuthFormProps) {
+export function AuthForm({
+  title,
+  fields,
+  onSubmit,
+  formType,
+  authErrorMsg,
+}: AuthFormProps) {
   const primaryButtonText = formType === "login" ? "Login" : "Sign up";
   const secondaryButtonText = formType === "login" ? "Sign up" : "Login";
 
@@ -62,6 +70,7 @@ export function AuthForm({ title, fields, onSubmit, formType }: AuthFormProps) {
       <Heading m={[5, 10]} textAlign="center">
         {title}
       </Heading>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field) => (
           <FormControl isInvalid={!!errors[field.name]}>
@@ -99,6 +108,11 @@ export function AuthForm({ title, fields, onSubmit, formType }: AuthFormProps) {
               </FormErrorMessage>
             </FormControl>
           </Flex>
+        )}
+        {authErrorMsg && (
+          <Text color="red" mt={5}>
+            {authErrorMsg}
+          </Text>
         )}
         <Center flexDir="column" m={10}>
           <Button type="submit" m={5} size="lg" colorScheme="teal" w="50%">
