@@ -108,7 +108,7 @@ function MyCalendar({ shifts }: MyCalendarProps) {
     };
   };
 
-  const formattedShifts = shifts.map(parseShift);
+  const formattedShifts = shifts.length === 0 ? [] : shifts.map(parseShift);
 
   return (
     <Calendar

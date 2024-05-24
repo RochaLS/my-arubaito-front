@@ -23,9 +23,15 @@ export function ListBox({ shifts }: ListBoxProps) {
         Upcoming shifts 📆
       </Heading>
 
-      {shifts.slice(1, maxShiftsToDisplay + 1).map((shift, index) => (
-        <ListShiftCard key={index} shift={shift} />
-      ))}
+      {shifts.length === 0 ? (
+        <Text mt={5} textAlign="center" color="gray.500">
+          No upcoming shifts, enjoy your break!
+        </Text>
+      ) : (
+        shifts
+          .slice(1, maxShiftsToDisplay + 1)
+          .map((shift, index) => <ListShiftCard key={index} shift={shift} />)
+      )}
     </Box>
   );
 }

@@ -32,12 +32,20 @@ export function OverviewBox({ data }: OverviewBoxProps) {
         Prediction for upcoming weeks 🤑
       </Heading>
       <SkeletonText skeletonHeight={4} noOfLines={4} isLoaded={true}>
-        <Text fontSize="xl">Total gross pay: {data.totalGrossPay}</Text>
-        <Text fontSize="lg">Number of shifts: {data.numOfShifts}</Text>
-        <Flex justify="space-between">
-          <Text fontSize="lg">Total hours: {data.totalHours}</Text>
-          <Button colorScheme="teal">See details</Button>
-        </Flex>
+        {data.numOfShifts === 0 ? (
+          <Text color="gray.500" textAlign="center">
+            No data to be displayed.
+          </Text>
+        ) : (
+          <>
+            <Text fontSize="xl">Total gross pay: {data.totalGrossPay}</Text>
+            <Text fontSize="lg">Number of shifts: {data.numOfShifts}</Text>
+            <Flex justify="space-between">
+              <Text fontSize="lg">Total hours: {data.totalHours}</Text>
+              <Button colorScheme="teal">See details</Button>
+            </Flex>
+          </>
+        )}
       </SkeletonText>
     </Flex>
   );
