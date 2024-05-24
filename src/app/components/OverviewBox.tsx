@@ -9,9 +9,15 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-import { LuInfo } from "react-icons/lu";
+interface OverviewBoxProps {
+  data: {
+    totalGrossPay: string;
+    totalHours: number;
+    numOfShifts: number;
+  };
+}
 
-export function OverviewBox() {
+export function OverviewBox({ data }: OverviewBoxProps) {
   return (
     <Flex
       boxShadow="sm"
@@ -26,10 +32,10 @@ export function OverviewBox() {
         Prediction for upcoming weeks 🤑
       </Heading>
       <SkeletonText skeletonHeight={4} noOfLines={4} isLoaded={true}>
-        <Text fontSize="xl">Total gross pay: $750.00</Text>
-        <Text fontSize="lg">Number of shifts: 6</Text>
+        <Text fontSize="xl">Total gross pay: {data.totalGrossPay}</Text>
+        <Text fontSize="lg">Number of shifts: {data.numOfShifts}</Text>
         <Flex justify="space-between">
-          <Text fontSize="lg">Total hours: 64</Text>
+          <Text fontSize="lg">Total hours: {data.totalHours}</Text>
           <Button colorScheme="teal">See details</Button>
         </Flex>
       </SkeletonText>

@@ -9,6 +9,11 @@ import {
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { useMemo, useState } from "react";
+import { Shift } from "../util/fetchShifts";
+
+interface MyCalendarProps {
+  shifts: Shift[];
+}
 
 const localizer = momentLocalizer(moment);
 
@@ -31,7 +36,7 @@ const myEventsList = [
   // Add more events as needed
 ];
 
-function MyCalendar() {
+function MyCalendar({ shifts }: MyCalendarProps) {
   // Toolbar not working when using nextjs on strict mode... Need to hanfle view and date state by ourselves
   // See fix: https://stackoverflow.com/questions/78011246/react-big-calendar-next-and-back-buttons-not-navigating-to-the-correct-month
   const [view, setView] = useState(Views.MONTH);
@@ -81,11 +86,35 @@ function MyCalendar() {
     }
   };
 
+  const parseShift = (shift: Shift) => {
+    const { startDate, startTime, endDate, endTime, shiftType } = shift;
+
+    const [startYear, startMonth, startDay] = startDate.split("-").map(Number);
+    const [startHour, startMinute] = startTime.split(":").map(Number);
+
+    const [endYear, endMonth, endDay] = endDate.split("-").map(Number);
+    const [endHour, endMinute] = endTime.split(":").map(Number);
+
+    return {
+      title: shiftType,
+      start: new Date(
+        startYear,
+        startMonth - 1,
+        startDay,
+        startHour,
+        startMinute
+      ),
+      end: new Date(endYear, endMonth - 1, endDay, endHour, endMinute),
+    };
+  };
+
+  const formattedShifts = shifts.map(parseShift);
+
   return (
     <Calendar
       views={[Views.MONTH, Views.WEEK]}
       localizer={localizer}
-      events={myEventsList}
+      events={formattedShifts}
       startAccessor="start"
       endAccessor="end"
       defaultView="month"

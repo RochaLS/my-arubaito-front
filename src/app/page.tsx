@@ -38,7 +38,13 @@ export default async function Page() {
           </Heading>
           <Flex flexDir={["column", "row"]}>
             <Box w={["100%", "90%", "90%", "70%"]} minH={300}>
-              <OverviewBox />
+              <OverviewBox
+                data={{
+                  totalHours: data.totalHours,
+                  totalGrossPay: formatter.format(data.totalGrossPay),
+                  numOfShifts: data.shifts.length,
+                }}
+              />
               <ShiftBox
                 nextShift={{
                   shift: data.nextShift,
@@ -47,7 +53,7 @@ export default async function Page() {
                 }}
               />
             </Box>
-            <ListBox />
+            <ListBox shifts={data.shifts} />
           </Flex>
           <Box
             boxShadow="md"
@@ -55,7 +61,7 @@ export default async function Page() {
             h={[0, 400, 500, 800]}
             display={["none", "block"]}
           >
-            <MyCalendar />
+            <MyCalendar shifts={data.shifts} />
           </Box>
         </Box>
       </Center>

@@ -1,8 +1,15 @@
 import { Box, Flex, Text, Icon, Heading } from "@chakra-ui/react";
 import { LuSunrise } from "react-icons/lu";
 import { ListShiftCard } from "./ListShiftCard";
+import { Shift } from "../util/fetchShifts";
 
-export function ListBox() {
+interface ListBoxProps {
+  shifts: Shift[];
+}
+
+export function ListBox({ shifts }: ListBoxProps) {
+  const maxShiftsToDisplay = 5;
+
   return (
     <Box
       borderRadius={10}
@@ -15,10 +22,10 @@ export function ListBox() {
       <Heading textAlign="center" size="lg">
         Upcoming shifts 📆
       </Heading>
-      <ListShiftCard />
-      <ListShiftCard />
-      <ListShiftCard />
-      <ListShiftCard />
+
+      {shifts.slice(1, maxShiftsToDisplay + 1).map((shift, index) => (
+        <ListShiftCard key={index} shift={shift} />
+      ))}
     </Box>
   );
 }
