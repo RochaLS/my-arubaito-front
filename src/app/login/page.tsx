@@ -22,15 +22,16 @@ export default function Page() {
           "Content-Type": "application/json",
           Authorization: `Basic ${authString}`,
         },
+        credentials: "include", // Our backend is separate, not same domain so we need this.
       });
 
       if (!response.ok) {
         setAuthErrorMsg("Wrong credentials.");
       } else {
         const result = await response.json();
+        console.log(result);
         setAuthErrorMsg("");
-
-        router.push(`/dashboard/worker?id=${result}`);
+        router.push(`/${result}`);
       }
     } catch (error) {
       console.log(error);
