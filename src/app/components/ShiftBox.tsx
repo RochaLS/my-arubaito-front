@@ -7,9 +7,10 @@ interface ShiftBoxProps {
     totalHours: number | null;
     moneyValue: string | null;
   };
+  isLoaded: boolean;
 }
 
-export function ShiftBox({ nextShift }: ShiftBoxProps) {
+export function ShiftBox({ nextShift, isLoaded }: ShiftBoxProps) {
   return (
     <Flex
       boxShadow="sm"
@@ -23,7 +24,7 @@ export function ShiftBox({ nextShift }: ShiftBoxProps) {
       <Heading mb={5} textAlign="center" size="lg">
         Next Shift 🕦
       </Heading>
-      <SkeletonText skeletonHeight={4} noOfLines={5} isLoaded={true}>
+      <SkeletonText skeletonHeight={4} noOfLines={5} isLoaded={isLoaded}>
         {nextShift.shift === null ? (
           <Text textAlign="center" color="gray.500">
             No shift scheduled.
@@ -31,13 +32,13 @@ export function ShiftBox({ nextShift }: ShiftBoxProps) {
         ) : (
           <>
             <Text boxShadow="sm" fontSize="lg" m={2}>
-              Date: {nextShift.shift.startDate}
+              Date: {nextShift.shift?.startDate}
             </Text>
             <Text boxShadow="sm" fontSize="lg" m={2}>
-              Time: {nextShift.shift.startTime} - {nextShift.shift.endTime}
+              Time: {nextShift.shift?.startTime} - {nextShift.shift?.endTime}
             </Text>
             <Text boxShadow="sm" fontSize="lg" m={2}>
-              Type: {nextShift.shift.shiftType}
+              Type: {nextShift.shift?.shiftType}
             </Text>
             <Text boxShadow="sm" fontSize="lg" m={2}>
               Total hours: {nextShift.totalHours}

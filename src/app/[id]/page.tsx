@@ -1,4 +1,3 @@
-// app/[id]/page.tsx
 "use client";
 import { useRouter } from "next/navigation";
 import { Navbar } from "../components/Navbar";
@@ -31,7 +30,7 @@ async function getData(id: string) {
 
   if (!response.ok) {
     if (response.status === 401) {
-      console.log(response);
+      throw new Error("Unauthorized");
     } else {
       throw new Error("Failed to fetch data");
     }
@@ -43,8 +42,8 @@ async function getData(id: string) {
 export default function Page({ params }: PageProps) {
   const { id } = params;
   const [data, setData] = useState<any>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -52,18 +51,17 @@ export default function Page({ params }: PageProps) {
       try {
         const fetchedData = await getData(id);
         setData(fetchedData);
+        setIsLoaded(true);
       } catch (error: any) {
-        console.log(error.message);
         if (error.message === "Unauthorized") {
           router.push("/login");
         }
         setError("Error fetching shifts, try again later.");
+        setIsLoaded(true);
       }
     };
     fetchData();
-    // Cleanup function (if needed)
-    return () => {};
-  }, []); // Empty dependency array to run effect only once when component mounts
+  }, []);
 
   if (error) {
     return (
@@ -85,10 +83,6 @@ export default function Page({ params }: PageProps) {
     );
   }
 
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
   let formatter = new Intl.NumberFormat("en-CA", {
     style: "currency",
     currency: "CAD",
@@ -107,20 +101,22 @@ export default function Page({ params }: PageProps) {
             <Box w={["100%", "90%", "90%", "70%"]} minH={300}>
               <OverviewBox
                 data={{
-                  totalHours: data.totalHours,
-                  totalGrossPay: formatter.format(data.totalGrossPay),
-                  numOfShifts: data.shifts.length,
+                  totalHours: data?.totalHours || 0,
+                  totalGrossPay: formatter.format(data?.totalGrossPay || 0),
+                  numOfShifts: data?.shifts ? data.shifts.length : 0,
                 }}
+                isLoaded={isLoaded}
               />
               <ShiftBox
                 nextShift={{
-                  shift: data.nextShift,
-                  totalHours: data.nextShiftTotalHours,
-                  moneyValue: formatter.format(data.nextShiftGrossPay),
+                  shift: data?.nextShift,
+                  totalHours: data?.nextShiftTotalHours || 0,
+                  moneyValue: formatter.format(data?.nextShiftGrossPay || 0),
                 }}
+                isLoaded={isLoaded}
               />
             </Box>
-            <ListBox shifts={data.shifts} />
+            <ListBox shifts={data?.shifts || []} isLoaded={isLoaded} />
           </Flex>
           <Box
             boxShadow="md"
@@ -128,7 +124,7 @@ export default function Page({ params }: PageProps) {
             h={[0, 400, 500, 800]}
             display={["none", "block"]}
           >
-            <MyCalendar shifts={data.shifts} />
+            <MyCalendar shifts={data?.shifts || []} />
           </Box>
         </Box>
       </Center>

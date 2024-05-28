@@ -1,13 +1,14 @@
-import { Box, Flex, Text, Icon, Heading } from "@chakra-ui/react";
+import { Box, Flex, Text, Icon, Heading, Skeleton } from "@chakra-ui/react";
 import { LuSunrise } from "react-icons/lu";
 import { ListShiftCard } from "./ListShiftCard";
 import { Shift } from "../util/fetchShifts";
 
 interface ListBoxProps {
   shifts: Shift[];
+  isLoaded: boolean;
 }
 
-export function ListBox({ shifts }: ListBoxProps) {
+export function ListBox({ shifts, isLoaded }: ListBoxProps) {
   const maxShiftsToDisplay = 5;
 
   return (
@@ -19,18 +20,26 @@ export function ListBox({ shifts }: ListBoxProps) {
       m={[5, 5, 5, 10]}
       p={5}
     >
-      <Heading textAlign="center" size="lg">
+      <Heading textAlign="center" size="lg" mb={10}>
         Upcoming shifts 📆
       </Heading>
 
-      {shifts.length === 0 ? (
-        <Text mt={5} textAlign="center" color="gray.500">
-          No upcoming shifts, enjoy your break!
-        </Text>
+      {isLoaded ? (
+        shifts.length === 0 ? (
+          <Text mt={5} textAlign="center" color="gray.500">
+            No upcoming shifts, enjoy your break!
+          </Text>
+        ) : (
+          shifts
+            .slice(1, maxShiftsToDisplay + 1)
+            .map((shift, index) => (
+              <ListShiftCard key={index} shift={shift} isLoaded={isLoaded} />
+            ))
+        )
       ) : (
-        shifts
-          .slice(1, maxShiftsToDisplay + 1)
-          .map((shift, index) => <ListShiftCard key={index} shift={shift} />)
+        Array.from({ length: maxShiftsToDisplay }).map((_, index) => (
+          <Skeleton key={index} height="50px" m={5} />
+        ))
       )}
     </Box>
   );

@@ -15,9 +15,10 @@ interface OverviewBoxProps {
     totalHours: number;
     numOfShifts: number;
   };
+  isLoaded: boolean;
 }
 
-export function OverviewBox({ data }: OverviewBoxProps) {
+export function OverviewBox({ data, isLoaded }: OverviewBoxProps) {
   return (
     <Flex
       boxShadow="sm"
@@ -31,7 +32,7 @@ export function OverviewBox({ data }: OverviewBoxProps) {
       <Heading mb={5} textAlign="center" size="lg">
         Prediction for upcoming weeks 🤑
       </Heading>
-      <SkeletonText skeletonHeight={4} noOfLines={4} isLoaded={true}>
+      <SkeletonText skeletonHeight={4} noOfLines={4} isLoaded={isLoaded}>
         {data.numOfShifts === 0 ? (
           <Text color="gray.500" textAlign="center">
             No data to be displayed.
