@@ -17,7 +17,7 @@ export default function Page() {
 
     try {
       const response = await fetch("http://localhost:8080/login", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Basic ${authString}`,

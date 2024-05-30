@@ -17,7 +17,7 @@ import { Navbar } from "@/app/components/Navbar";
 
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { shiftSchema } from "../../util/validationSchemas";
+import { shiftSchema } from "../../../util/validationSchemas";
 
 export default function Page() {
   const {

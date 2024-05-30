@@ -71,7 +71,7 @@ export function AuthForm({
         {title}
       </Heading>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form method="POST" onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field) => (
           <FormControl isInvalid={!!errors[field.name]}>
             <FormLabel mt={5}>{field.label}</FormLabel>
