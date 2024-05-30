@@ -8,10 +8,17 @@ interface ListShiftCardProps {
 }
 
 export function ListShiftCard({ shift, isLoaded }: ListShiftCardProps) {
+  const shiftDate = new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  })
+    .format(new Date(shift.startDate))
+    .replace(/\//g, "-");
   return (
     <Flex m={5} boxShadow="sm" justify="space-between" align="center">
       <Box>
-        <Text fontSize="xl">{shift.startDate}</Text>
+        <Text fontSize="xl">{shiftDate}</Text>
         <Text color="teal.500" fontSize="xl">
           {shift.startTime} - {shift.endTime}
         </Text>
