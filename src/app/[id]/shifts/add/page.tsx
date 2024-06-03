@@ -18,8 +18,36 @@ import { Navbar } from "@/app/components/Navbar";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { shiftSchema } from "../../../util/validationSchemas";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Page() {
+interface ShiftAddPageProps {
+  params: {
+    id: string;
+  };
+}
+
+interface Job {
+  title: string;
+  id: string;
+  hourlyRate: number;
+}
+
+async function getData(id: string) {
+  const response = await fetch(`http://localhost:8080/api/job/byWorker/${id}`, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  const data = await response.json();
+  return data;
+}
+
+export default function Page({ params }: ShiftAddPageProps) {
+  const { id } = params;
   const {
     register,
     handleSubmit,
@@ -27,6 +55,24 @@ export default function Page() {
   } = useForm({
     resolver: zodResolver(shiftSchema),
   });
+
+  const [data, setData] = useState<any>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedData = await getData(id);
+        setData(fetchedData);
+        console.log(data);
+      } catch (error: any) {
+        console.log(error);
+        router.push(`/${id}`);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleShiftSubmit: SubmitHandler<FieldValues> = (data) => {
     // Handle form submission here
@@ -118,8 +164,11 @@ export default function Page() {
                   size="lg"
                   {...register("job")}
                 >
-                  <option value="0">Uniqlo</option>
-                  <option value="1">Danbo Ramen</option>
+                  {data?.map((job: Job) => (
+                    <option key={job.id} value={job.id}>
+                      {job.title}
+                    </option>
+                  ))}
                 </Select>
                 <FormErrorMessage>
                   {errors.job && errors.job.message?.toString()}

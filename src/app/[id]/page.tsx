@@ -2,13 +2,13 @@
 import { useRouter } from "next/navigation";
 import { Navbar } from "../components/Navbar";
 import { OverviewBox } from "../components/OverviewBox";
-import { Center, Heading, Box, Flex } from "@chakra-ui/react";
+import { Center, Heading, Box, Flex, Button, Link } from "@chakra-ui/react";
 import { ShiftBox } from "../components/ShiftBox";
 import { ListBox } from "../components/ListBox";
 import MyCalendar from "../components/Calendar";
 import { IoIosWarning } from "react-icons/io";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import NextLink from "next/link";
 
 interface PageProps {
   params: {
@@ -96,6 +96,11 @@ export default function Page({ params }: PageProps) {
           <Heading m={[5, 10]} textAlign="center">
             Dashboard
           </Heading>
+          <Flex justify="right" mx={[5, 5, 5, 10]}>
+            <Link as={NextLink} href={`${id}/shifts/add`}>
+              <Button colorScheme="teal">Add shift</Button>
+            </Link>
+          </Flex>
 
           <Flex flexDir={["column", "row"]}>
             <Box w={["100%", "90%", "90%", "70%"]} minH={300}>
