@@ -68,7 +68,7 @@ export default function Page({ params }: PageProps) {
   if (error) {
     return (
       <>
-        <Navbar />
+        <Navbar currentUserId={id} />
         <Center>
           <Box
             display="flex"
@@ -92,7 +92,7 @@ export default function Page({ params }: PageProps) {
 
   return (
     <>
-      <Navbar />
+      <Navbar currentUserId={id} />
       <Center>
         <Box minW="80%">
           <Heading m={[5, 10]} textAlign="center">

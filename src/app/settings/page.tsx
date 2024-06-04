@@ -27,7 +27,7 @@ export default function page() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Heading pt={10} textAlign="center">
         Settings
       </Heading>

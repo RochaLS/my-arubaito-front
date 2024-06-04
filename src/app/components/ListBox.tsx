@@ -31,7 +31,7 @@ export function ListBox({ shifts, isLoaded }: ListBoxProps) {
           </Text>
         ) : (
           shifts
-            .slice(1, maxShiftsToDisplay + 1)
+            .slice(0, maxShiftsToDisplay + 1)
             .map((shift, index) => (
               <ListShiftCard key={index} shift={shift} isLoaded={isLoaded} />
             ))

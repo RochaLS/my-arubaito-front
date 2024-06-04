@@ -7,11 +7,22 @@ export interface Shift {
   endDate: string;
   endTime: string;
   shiftType: string;
+  job_id: string;
 }
 
-export const fetchShifts = async (): Promise<Shift[]> => {
-  const res = await axios.get(
-    "http://localhost:8080/api/income/4/1/calculate?date=2024-02-28"
+export async function getData(id: string) {
+  const response = await fetch(
+    `http://localhost:8080/api/income/${id}/1/calculate?date=${new Date()
+      .toISOString()
+      .slice(0, 10)}`,
+    {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
   );
-  return res.data;
-};
+
+  return response.json();
+}

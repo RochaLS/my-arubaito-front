@@ -11,7 +11,7 @@ export default function Page() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <JobForm
         onSubmit={handleJobSubmit}
         data={{

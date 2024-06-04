@@ -107,7 +107,7 @@ export default function Page({ params }: ShiftAddPageProps) {
 
   return (
     <>
-      <Navbar />
+      <Navbar currentUserId={id} />
       <Box p={50}>
         <Flex
           flexDir="column"
