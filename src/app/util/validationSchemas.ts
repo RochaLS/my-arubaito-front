@@ -42,6 +42,6 @@ export const shiftSchema = z.object({
   endTime: z
     .string()
     .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Please insert a valid end time."),
-  shiftType: z.enum(["opening", "mid", "closing"]),
+  shiftType: z.enum(["Opening", "Mid", "Closing"]),
   job: z.string().min(1, "Please provide the job."),
 });

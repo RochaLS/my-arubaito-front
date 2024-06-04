@@ -57,6 +57,7 @@ export default function Page({ params }: ShiftAddPageProps) {
   });
 
   const [data, setData] = useState<any>(null);
+  const [authErrorMsg, setAuthErrorMsg] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
@@ -74,8 +75,34 @@ export default function Page({ params }: ShiftAddPageProps) {
     fetchData();
   }, []);
 
-  const handleShiftSubmit: SubmitHandler<FieldValues> = (data) => {
-    // Handle form submission here
+  const handleShiftSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      const response = await fetch("http://localhost:8080/api/shift/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          startDate: data.date,
+          startTime: data.startTime,
+          endDate: data.date,
+          endTime: data.endTime,
+          shiftType: data.shiftType,
+          job_id: data.job,
+          worker_id: id,
+        }),
+        credentials: "include", // Our backend is separate, not same domain so we need this.
+      });
+
+      if (!response.ok) {
+        setAuthErrorMsg("Error adding shift. Try again later.");
+      } else {
+        setAuthErrorMsg("");
+        router.back();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -148,9 +175,9 @@ export default function Page({ params }: ShiftAddPageProps) {
                   size="lg"
                   {...register("shiftType")}
                 >
-                  <option value="opening">Opening</option>
-                  <option value="mid">Mid</option>
-                  <option value="closing">Closing</option>
+                  <option value="Opening">Opening</option>
+                  <option value="Mid">Mid</option>
+                  <option value="Closing">Closing</option>
                 </Select>
                 <FormErrorMessage>
                   {errors.shiftType && errors.shiftType.message?.toString()}
