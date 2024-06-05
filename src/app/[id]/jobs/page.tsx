@@ -17,20 +17,70 @@ import {
   useBreakpointValue,
   Link,
 } from "@chakra-ui/react";
-import { Navbar } from "../components/Navbar";
+import { Navbar } from "../../components/Navbar";
 import NextLink from "next/link";
+import { useEffect, useState } from "react";
+import { Job } from "@/app/util/types";
 
-export default function Page() {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+async function getData(id: string) {
+  const response = await fetch(`http://localhost:8080/api/job/byWorker/${id}`, {
+    method: "GET",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  return response.json();
+}
+
+export default function Page({ params }: PageProps) {
+  const { id } = params;
   const isMobile = useBreakpointValue({ base: true, md: false });
 
-  const jobData = [
-    { title: "Uniqlo", rate: 19.5 },
-    { title: "Danbo Ramen", rate: 19.5 },
-  ];
+  const [data, setData] = useState<Job[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const fetchedData = await getData(id);
+        setData(fetchedData);
+        setIsLoaded(true);
+      } catch (error: any) {
+        setError("Error fetching shifts, try again later.");
+        setIsLoaded(true);
+      }
+    };
+    fetchData();
+  }, [data]);
+
+  async function handleOnClick(id: number) {
+    const response = await fetch(`http://localhost:8080/api/job/delete/${id}`, {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Deletion failed, try again later.");
+    }
+  }
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar currentUserId={id} />
       <Heading pt={10} textAlign="center">
         My jobs
       </Heading>
@@ -44,7 +94,7 @@ export default function Page() {
             w="full"
             borderRadius={10}
           >
-            {jobData.map((job, index) => (
+            {data.map((job: Job, index: number) => (
               <Flex
                 key={index}
                 direction="column"
@@ -54,7 +104,7 @@ export default function Page() {
               >
                 <Flex justify="space-between" mb={2}>
                   <Box fontWeight="bold">{job.title}</Box>
-                  <Box>{job.rate.toFixed(2)}</Box>
+                  <Box>{job.hourlyRate.toFixed(2)}</Box>
                 </Flex>
                 <Flex justify="flex-end">
                   <Link as={NextLink} href="jobs/edit">
@@ -67,7 +117,14 @@ export default function Page() {
                       Edit
                     </Button>
                   </Link>
-                  <Button variant="outline" colorScheme="red" size="sm">
+                  <Button
+                    variant="outline"
+                    colorScheme="red"
+                    size="sm"
+                    onSubmit={() => {
+                      handleOnClick(job.id);
+                    }}
+                  >
                     Remove
                   </Button>
                 </Flex>
@@ -99,10 +156,10 @@ export default function Page() {
                 </Tr>
               </Thead>
               <Tbody>
-                {jobData.map((job, index) => (
+                {data.map((job: Job, index: number) => (
                   <Tr key={index}>
                     <Td>{job.title}</Td>
-                    <Td isNumeric>{job.rate.toFixed(2)}</Td>
+                    <Td isNumeric>{job.hourlyRate.toFixed(2)}</Td>
                     <Td>
                       <Link as={NextLink} href="jobs/edit">
                         <Button variant="outline" colorScheme="teal">
@@ -111,7 +168,13 @@ export default function Page() {
                       </Link>
                     </Td>
                     <Td>
-                      <Button variant="outline" colorScheme="red">
+                      <Button
+                        variant="outline"
+                        colorScheme="red"
+                        onSubmit={() => {
+                          handleOnClick(job.id);
+                        }}
+                      >
                         Remove
                       </Button>
                     </Td>
