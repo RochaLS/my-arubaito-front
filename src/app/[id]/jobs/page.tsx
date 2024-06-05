@@ -64,6 +64,7 @@ export default function Page({ params }: PageProps) {
   }, [data]);
 
   async function handleOnClick(id: number) {
+    console.log("HANDLED");
     const response = await fetch(`http://localhost:8080/api/job/delete/${id}`, {
       cache: "no-store",
       headers: {
@@ -73,7 +74,10 @@ export default function Page({ params }: PageProps) {
       credentials: "include",
     });
 
+    console.log(response);
+
     if (!response.ok) {
+      console.log("ERRORRR!!");
       throw new Error("Deletion failed, try again later.");
     }
   }
@@ -161,7 +165,7 @@ export default function Page({ params }: PageProps) {
                     <Td>{job.title}</Td>
                     <Td isNumeric>{job.hourlyRate.toFixed(2)}</Td>
                     <Td>
-                      <Link as={NextLink} href="jobs/edit">
+                      <Link as={NextLink} href={`jobs/edit/${job.id}`}>
                         <Button variant="outline" colorScheme="teal">
                           Edit
                         </Button>
@@ -171,7 +175,8 @@ export default function Page({ params }: PageProps) {
                       <Button
                         variant="outline"
                         colorScheme="red"
-                        onSubmit={() => {
+                        onClick={() => {
+                          console.log("clicked");
                           handleOnClick(job.id);
                         }}
                       >

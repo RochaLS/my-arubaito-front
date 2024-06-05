@@ -18,7 +18,7 @@ interface PageProps {
 
 async function getData(id: string) {
   const response = await fetch(
-    `http://localhost:8080/api/income/${id}/1/calculate?date=${new Date()
+    `http://localhost:8080/api/income/${id}/calculate?date=${new Date()
       .toISOString()
       .slice(0, 10)}`,
     {

@@ -25,7 +25,7 @@ export const signUpSchema = z
   });
 
 export const jobSchema = z.object({
-  hourlyRate: z
+  hourlyRate: z.coerce
     .number()
     .min(0.01, "Hourly rate must be greater than 0.")
     .nonnegative("Hourly rate must be a positive number."),
