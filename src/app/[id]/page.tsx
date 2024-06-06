@@ -65,25 +65,25 @@ export default function Page({ params }: PageProps) {
     fetchData();
   }, []);
 
-  if (error) {
-    return (
-      <>
-        <Navbar currentUserId={id} />
-        <Center>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexDir="column"
-            mt={5}
-          >
-            <IoIosWarning size={100} color="teal" />
-            <Heading>{error}</Heading>
-          </Box>
-        </Center>
-      </>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <>
+  //       <Navbar currentUserId={id} />
+  //       <Center>
+  //         <Box
+  //           display="flex"
+  //           alignItems="center"
+  //           justifyContent="center"
+  //           flexDir="column"
+  //           mt={5}
+  //         >
+  //           <IoIosWarning size={100} color="teal" />
+  //           <Heading>{error}</Heading>
+  //         </Box>
+  //       </Center>
+  //     </>
+  //   );
+  // }
 
   let formatter = new Intl.NumberFormat("en-CA", {
     style: "currency",
