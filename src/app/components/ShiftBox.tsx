@@ -25,7 +25,7 @@ export function ShiftBox({ nextShift, isLoaded }: ShiftBoxProps) {
         Next Shift 🕦
       </Heading>
       <SkeletonText skeletonHeight={4} noOfLines={5} isLoaded={isLoaded}>
-        {nextShift.shift === null ? (
+        {nextShift.shift === null || nextShift.shift === undefined ? (
           <Text textAlign="center" color="gray.500">
             No shift scheduled.
           </Text>
