@@ -1,5 +1,6 @@
 "use client";
 
+import { Copyright } from "@/app/components/Copyright";
 import { Navbar } from "../../components/Navbar";
 import {
   Box,
@@ -23,9 +24,16 @@ import {
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function page() {
+interface SettingsPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function page({ params }: SettingsPageProps) {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const router = useRouter();
+  const { id } = params;
 
   async function handleLogout() {
     try {
@@ -46,7 +54,7 @@ export default function page() {
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar currentUserId={id} />
       <Heading pt={10} textAlign="center">
         Settings
       </Heading>

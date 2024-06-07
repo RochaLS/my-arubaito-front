@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import { formatDate } from "@/app/util/dateFormatting";
 import { IoIosWarning } from "react-icons/io";
 import { ErrorBanner } from "@/app/components/ErrorBanner";
+import { Copyright } from "@/app/components/Copyright";
 
 interface PageProps {
   params: {
