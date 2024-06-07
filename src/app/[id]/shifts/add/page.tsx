@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { shiftSchema } from "../../../util/validationSchemas";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { IoIosWarning } from "react-icons/io";
 
 interface ShiftAddPageProps {
   params: {
@@ -43,6 +44,17 @@ async function getData(id: string) {
   });
 
   const data = await response.json();
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error("Unauthorized");
+    } else if (response.status === 404) {
+      throw new Error("Not found");
+    } else {
+      throw new Error("Failed to fetch data");
+    }
+  }
+
   return data;
 }
 
@@ -57,7 +69,7 @@ export default function Page({ params }: ShiftAddPageProps) {
   });
 
   const [data, setData] = useState<any>(null);
-  const [authErrorMsg, setAuthErrorMsg] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
@@ -67,8 +79,13 @@ export default function Page({ params }: ShiftAddPageProps) {
         setData(fetchedData);
         console.log(data);
       } catch (error: any) {
-        console.log(error);
-        router.push(`/${id}`);
+        if (error.message === "Unauthorized") {
+          router.push("/login");
+        } else if (error.message === "Not found") {
+          setErrorMsg("404");
+        } else {
+          setErrorMsg("Error fetching shifts, try again later.");
+        }
       }
     };
 
@@ -95,15 +112,35 @@ export default function Page({ params }: ShiftAddPageProps) {
       });
 
       if (!response.ok) {
-        setAuthErrorMsg("Error adding shift. Try again later.");
+        setErrorMsg("Error adding shift. Try again later.");
       } else {
-        setAuthErrorMsg("");
+        setErrorMsg("");
         router.back();
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  if (errorMsg && errorMsg !== "404") {
+    return (
+      <>
+        <Navbar currentUserId={id} />
+        <Center>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDir="column"
+            mt={5}
+          >
+            <IoIosWarning size={100} color="teal" />
+            <Heading>{errorMsg}</Heading>
+          </Box>
+        </Center>
+      </>
+    );
+  }
 
   return (
     <>

@@ -48,32 +48,36 @@ export default function Page({ params }: PageProps) {
         setData(fetchedData);
         setIsLoaded(true);
       } catch (error: any) {
-        setError("Error fetching shifts, try again later.");
+        if (error.message === "Not found") {
+          setError("404");
+        } else {
+          setError("Error fetching shifts, try again later.");
+        }
         setIsLoaded(true);
       }
     };
     fetchData();
   }, [data]);
 
-  // if (error) {
-  //   return (
-  //     <>
-  //       <Navbar currentUserId={id} />
-  //       <Center>
-  //         <Box
-  //           display="flex"
-  //           alignItems="center"
-  //           justifyContent="center"
-  //           flexDir="column"
-  //           mt={5}
-  //         >
-  //           <IoIosWarning size={100} color="teal" />
-  //           <Heading>{error}</Heading>
-  //         </Box>
-  //       </Center>
-  //     </>
-  //   );
-  // }
+  if (error && error !== "404") {
+    return (
+      <>
+        <Navbar currentUserId={id} />
+        <Center>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDir="column"
+            mt={5}
+          >
+            <IoIosWarning size={100} color="teal" />
+            <Heading>{error}</Heading>
+          </Box>
+        </Center>
+      </>
+    );
+  }
 
   async function handleOnClick(id: number) {
     const response = await fetch(

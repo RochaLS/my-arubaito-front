@@ -21,6 +21,8 @@ import { Navbar } from "../../components/Navbar";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
 import { Job } from "@/app/util/types";
+import { checkResponse } from "@/app/util/checkResponse";
+import { IoIosWarning } from "react-icons/io";
 
 interface PageProps {
   params: {
@@ -37,6 +39,8 @@ async function getData(id: string) {
     },
     credentials: "include",
   });
+
+  checkResponse(response); // Checks the response and sets and throws respective error.
 
   return response.json();
 }
@@ -56,7 +60,11 @@ export default function Page({ params }: PageProps) {
         setData(fetchedData);
         setIsLoaded(true);
       } catch (error: any) {
-        setError("Error fetching shifts, try again later.");
+        if (error.message === "Not found") {
+          setError("404");
+        } else {
+          setError("Error fetching jobs, try again later.");
+        }
         setIsLoaded(true);
       }
     };
@@ -64,7 +72,6 @@ export default function Page({ params }: PageProps) {
   }, [data]);
 
   async function handleOnClick(id: number) {
-    console.log("HANDLED");
     const response = await fetch(`http://localhost:8080/api/job/delete/${id}`, {
       cache: "no-store",
       headers: {
@@ -77,9 +84,28 @@ export default function Page({ params }: PageProps) {
     console.log(response);
 
     if (!response.ok) {
-      console.log("ERRORRR!!");
       throw new Error("Deletion failed, try again later.");
     }
+  }
+
+  if (error && error !== "404") {
+    return (
+      <>
+        <Navbar currentUserId={id} />
+        <Center>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDir="column"
+            mt={5}
+          >
+            <IoIosWarning size={100} color="teal" />
+            <Heading>{error}</Heading>
+          </Box>
+        </Center>
+      </>
+    );
   }
 
   return (

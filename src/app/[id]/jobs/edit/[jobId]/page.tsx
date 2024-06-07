@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Job } from "@/app/util/types";
+import { checkResponse } from "@/app/util/checkResponse";
+import { Box, Center, Heading } from "@chakra-ui/react";
+import { IoIosWarning } from "react-icons/io";
 
 interface JobEditPageProps {
   params: {
@@ -24,11 +27,12 @@ async function getData(id: string) {
     credentials: "include",
   });
 
+  checkResponse(response);
+
   return response.json();
 }
 
 export default function Page({ params }: JobEditPageProps) {
-  console.log("Page rendered");
   const { id, jobId } = params;
   const [data, setData] = useState<Job>();
   const [errorMsg, setErrorMsg] = useState<string>("");
@@ -40,7 +44,7 @@ export default function Page({ params }: JobEditPageProps) {
         const fetchedData = await getData(jobId);
         setData(fetchedData);
       } catch (error: any) {
-        setErrorMsg("Error fetching jobs, try again later.");
+        setErrorMsg("Error fetching job, try again later.");
         router.back();
       }
     };

@@ -33,6 +33,8 @@ async function getData(id: string) {
   if (!response.ok) {
     if (response.status === 401) {
       throw new Error("Unauthorized");
+    } else if (response.status === 404) {
+      throw new Error("Not found");
     } else {
       throw new Error("Failed to fetch data");
     }
@@ -57,33 +59,37 @@ export default function Page({ params }: PageProps) {
       } catch (error: any) {
         if (error.message === "Unauthorized") {
           router.push("/login");
+        } else if (error.message === "Not found") {
+          setError("404");
+        } else {
+          setError("Error fetching shifts, try again later.");
         }
-        setError("Error fetching shifts, try again later.");
+
         setIsLoaded(true);
       }
     };
     fetchData();
   }, []);
 
-  // if (error) {
-  //   return (
-  //     <>
-  //       <Navbar currentUserId={id} />
-  //       <Center>
-  //         <Box
-  //           display="flex"
-  //           alignItems="center"
-  //           justifyContent="center"
-  //           flexDir="column"
-  //           mt={5}
-  //         >
-  //           <IoIosWarning size={100} color="teal" />
-  //           <Heading>{error}</Heading>
-  //         </Box>
-  //       </Center>
-  //     </>
-  //   );
-  // }
+  if (error && error !== "404") {
+    return (
+      <>
+        <Navbar currentUserId={id} />
+        <Center>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDir="column"
+            mt={5}
+          >
+            <IoIosWarning size={100} color="teal" />
+            <Heading>{error}</Heading>
+          </Box>
+        </Center>
+      </>
+    );
+  }
 
   let formatter = new Intl.NumberFormat("en-CA", {
     style: "currency",
