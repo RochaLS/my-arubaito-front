@@ -95,11 +95,11 @@ export function JobForm({ data, onSubmit }: JobFormProps) {
             </FormControl>
 
             <FormControl isInvalid={!!errors.jobTitle}>
-              <FormLabel mt={5}>Job title / Company</FormLabel>
+              <FormLabel mt={5}>Job Title</FormLabel>
               <Input
                 focusBorderColor="teal.500"
                 size="lg"
-                placeholder="Job title or company name"
+                placeholder="Job Title"
                 type="text"
                 {...register("jobTitle")}
               />
