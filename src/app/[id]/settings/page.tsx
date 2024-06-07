@@ -1,6 +1,6 @@
 "use client";
 
-import { Navbar } from "../components/Navbar";
+import { Navbar } from "../../components/Navbar";
 import {
   Box,
   Table,
@@ -21,9 +21,28 @@ import {
 } from "@chakra-ui/react";
 
 import NextLink from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function page() {
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const router = useRouter();
+
+  async function handleLogout() {
+    try {
+      const response = await fetch("http://localhost:8080/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        console.log("Logout failed.");
+      } else {
+        router.push("/login");
+      }
+    } catch (error) {
+      console.log("Error " + error);
+    }
+  }
 
   return (
     <>
@@ -50,7 +69,12 @@ export default function page() {
               <Flex align="center" justify="space-between" mb={2}>
                 <Text>Logout from this device</Text>
                 <Link as={NextLink} href="/login">
-                  <Button size="sm" colorScheme="teal" variant="outline">
+                  <Button
+                    size="sm"
+                    colorScheme="teal"
+                    variant="outline"
+                    onClick={handleLogout}
+                  >
                     Logout
                   </Button>
                 </Link>
@@ -93,7 +117,11 @@ export default function page() {
                   <Td>Logout from this device</Td>
                   <Td>
                     <Link as={NextLink} href="/login">
-                      <Button variant="outline" colorScheme="teal">
+                      <Button
+                        variant="outline"
+                        colorScheme="teal"
+                        onClick={handleLogout}
+                      >
                         Logout
                       </Button>
                     </Link>

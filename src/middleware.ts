@@ -49,6 +49,11 @@ export async function middleware(req: NextRequest) {
   if (!response.ok) {
     const currentUserId = await response.text();
     console.log(currentUserId);
+
+    if (currentUserId === "") {
+      url.pathname = "/login";
+      return NextResponse.redirect(url.toString());
+    }
     // userId in path
     if (currentUserId !== userId) {
       url.pathname = `/${currentUserId}`;

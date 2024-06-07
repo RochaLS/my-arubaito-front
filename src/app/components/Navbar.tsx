@@ -40,7 +40,7 @@ export function Navbar({ currentUserId }: NavBarProps) {
             Jobs
           </Button>
         </Link>
-        <Link as={NextLink} href="/settings">
+        <Link as={NextLink} href={dynamicPath + "/settings"}>
           <Button variant="link" colorScheme="teal">
             Settings
           </Button>
