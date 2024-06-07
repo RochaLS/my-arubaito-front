@@ -9,6 +9,7 @@ import MyCalendar from "../components/Calendar";
 import { useEffect, useState } from "react";
 import NextLink from "next/link";
 import { ErrorBanner } from "../components/ErrorBanner";
+import { Copyright } from "../components/Copyright";
 
 interface PageProps {
   params: {
@@ -125,6 +126,7 @@ export default function Page({ params }: PageProps) {
           </Box>
         </Box>
       </Center>
+      <Copyright />
     </>
   );
 }
