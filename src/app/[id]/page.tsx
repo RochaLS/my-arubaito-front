@@ -6,9 +6,9 @@ import { Center, Heading, Box, Flex, Button, Link } from "@chakra-ui/react";
 import { ShiftBox } from "../components/ShiftBox";
 import { ListBox } from "../components/ListBox";
 import MyCalendar from "../components/Calendar";
-import { IoIosWarning } from "react-icons/io";
 import { useEffect, useState } from "react";
 import NextLink from "next/link";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 interface PageProps {
   params: {
@@ -72,23 +72,7 @@ export default function Page({ params }: PageProps) {
   }, []);
 
   if (error && error !== "404") {
-    return (
-      <>
-        <Navbar currentUserId={id} />
-        <Center>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexDir="column"
-            mt={5}
-          >
-            <IoIosWarning size={100} color="teal" />
-            <Heading>{error}</Heading>
-          </Box>
-        </Center>
-      </>
-    );
+    return <ErrorBanner currentUserId={id} message={error} />;
   }
 
   let formatter = new Intl.NumberFormat("en-CA", {

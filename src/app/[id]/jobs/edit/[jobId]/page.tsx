@@ -7,8 +7,6 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Job } from "@/app/util/types";
 import { checkResponse } from "@/app/util/checkResponse";
-import { Box, Center, Heading } from "@chakra-ui/react";
-import { IoIosWarning } from "react-icons/io";
 
 interface JobEditPageProps {
   params: {

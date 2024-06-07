@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { Job } from "@/app/util/types";
 import { checkResponse } from "@/app/util/checkResponse";
 import { IoIosWarning } from "react-icons/io";
+import { ErrorBanner } from "@/app/components/ErrorBanner";
 
 interface PageProps {
   params: {
@@ -89,23 +90,7 @@ export default function Page({ params }: PageProps) {
   }
 
   if (error && error !== "404") {
-    return (
-      <>
-        <Navbar currentUserId={id} />
-        <Center>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexDir="column"
-            mt={5}
-          >
-            <IoIosWarning size={100} color="teal" />
-            <Heading>{error}</Heading>
-          </Box>
-        </Center>
-      </>
-    );
+    return <ErrorBanner currentUserId={id} message={error} />;
   }
 
   return (
