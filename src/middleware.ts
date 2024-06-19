@@ -13,11 +13,15 @@ export async function middleware(req: NextRequest) {
   const url = new URL(req.url, "http://localhost:3000");
   console.log(`===============\nSession id: ${sessionId?.value}`);
 
-  if (req.nextUrl.pathname.startsWith("/_next")) {
+  if (
+    req.nextUrl.pathname.startsWith("/_next") ||
+    req.nextUrl.pathname.startsWith("/images") ||
+    req.nextUrl.pathname.startsWith("/favicon.ico")
+  ) {
     return NextResponse.next();
   }
 
-  const publicPaths = ["/login", "/signup"];
+  const publicPaths = ["/login", "/signup", "/"];
   if (publicPaths.includes(url.pathname)) {
     return NextResponse.next();
   }
