@@ -135,7 +135,7 @@ export default function Page() {
               <Image src="/images/girl.png" boxSize={[300, 400, 500]} />
             </Flex>
           </Box>
-          <Heading mt={10} textAlign="center">
+          <Heading mx={2} mt={10} textAlign="center">
             Get to know our features
           </Heading>
           <SimpleGrid
