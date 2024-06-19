@@ -13,6 +13,8 @@ import {
   Text,
   Icon,
   HStack,
+  Image,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Logo } from "./components/Logo";
 import { Copyright } from "./components/Copyright";
@@ -26,6 +28,7 @@ import NextLink from "next/link";
 
 // app/page.tsx
 export default function Page() {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   return (
     <>
       <Center pt={5}>
@@ -34,45 +37,102 @@ export default function Page() {
       <Center w="100%">
         <Flex flexDir="column" justify="center" w="100%">
           <Box
-            p={40}
-            background="url('/images/bg-with-coins.jpg') center/cover no-repeat"
-            bgColor="white"
+            p={[2, 20]}
+            // background="url('/images/bg-with-coins.jpg') right center /cover no-repeat"
+            bgColor="teal.500"
           >
-            <Heading my={2} size="3xl" color="white">
-              Know What You’ll Earn
-            </Heading>
-            <Heading size="3xl" color="white">
-              Before You Work
-            </Heading>
-            <Heading
-              mt={10}
-              mb={2}
-              color="white"
-              fontWeight="regular"
-              size="lg"
+            <Flex
+              justifyContent={"space-between"}
+              alignItems="center"
+              flexDir={[
+                "column-reverse",
+                "column-reverse",
+                "column-reverse",
+                "row",
+              ]}
             >
-              Empowering hourly workers with a snapshot
-            </Heading>
-            <Heading color="white" fontWeight="regular" size="lg">
-              of their future income in dynamic job settings.
-            </Heading>
-
-            <Flex mt={10}>
-              <NextLink href="/signup">
-                <Button mr={5} size="lg" bgColor="teal.700" color="white">
-                  Get Started
-                </Button>
-              </NextLink>
-              <NextLink href="/login">
-                <Button
-                  size="lg"
-                  bgColor="transparent"
-                  border="3px solid white"
+              <Box>
+                <Heading
+                  my={2}
+                  size={["xl", "3xl"]}
+                  color="white"
+                  textAlign={["center", "left"]}
+                >
+                  Know What You’ll Earn
+                </Heading>
+                <Heading
+                  textAlign={["center", "left"]}
+                  size={["xl", "3xl"]}
                   color="white"
                 >
-                  Login
-                </Button>
-              </NextLink>
+                  Before You Work
+                </Heading>
+                {isMobile ? (
+                  <Heading
+                    mt={10}
+                    mb={2}
+                    color="white"
+                    fontWeight="regular"
+                    size="lg"
+                    textAlign="center"
+                  >
+                    Empowering hourly workers with a snapshot of their future
+                    income in dynamic job settings.
+                  </Heading>
+                ) : (
+                  <>
+                    <Heading
+                      mt={10}
+                      mb={2}
+                      color="white"
+                      fontWeight="regular"
+                      size="lg"
+                    >
+                      Empowering hourly workers with a snapshot
+                    </Heading>
+                    <Heading color="white" fontWeight="regular" size="lg">
+                      of their future income in dynamic job settings.
+                    </Heading>
+                  </>
+                )}
+                {/* <Heading
+                  mt={10}
+                  mb={2}
+                  color="white"
+                  fontWeight="regular"
+                  size="lg"
+                  p={5}
+                >
+                  Empowering hourly workers with a snapshot
+                </Heading>
+                <Heading p={5} color="white" fontWeight="regular" size="lg">
+                  of their future income in dynamic job settings.
+                </Heading> */}
+
+                <Flex
+                  mt={10}
+                  mb={[10, 0]}
+                  flexWrap="wrap"
+                  justify={["center", "flex-start"]}
+                >
+                  <NextLink href="/signup">
+                    <Button mr={5} size="lg" bgColor="teal.700" color="white">
+                      Get Started
+                    </Button>
+                  </NextLink>
+                  <NextLink href="/login">
+                    <Button
+                      size="lg"
+                      bgColor="transparent"
+                      border="3px solid white"
+                      color="white"
+                    >
+                      Login
+                    </Button>
+                  </NextLink>
+                </Flex>
+              </Box>
+              <Image src="/images/girl.png" boxSize={[300, 400, 500]} />
             </Flex>
           </Box>
           <Heading mt={10} textAlign="center">
@@ -81,7 +141,13 @@ export default function Page() {
           <SimpleGrid
             p={5}
             spacing={10}
-            templateColumns="repeat(auto-fill, minmax(400px, 1fr))"
+            templateColumns={{
+              base: "1fr", // 1 column on mobile devices
+              sm: "repeat(1, 1fr)", // 1 columns on small devices (sm)
+              md: "repeat(3, 1fr)", // 3 columns on rest of devices
+              lg: "repeat(3, 1fr)",
+              xl: "repeat(3, 1fr)",
+            }}
             mt={10}
           >
             <Card>
