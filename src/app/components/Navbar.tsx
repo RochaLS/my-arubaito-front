@@ -22,7 +22,13 @@ export function Navbar({ currentUserId }: NavBarProps) {
           <Heading lineHeight="tall" size={["md", "lg"]}>
             <Highlight
               query="Arubaito."
-              styles={{ px: "2", py: "1", rounded: "full", bg: "teal.100" }}
+              styles={{
+                px: "2",
+                py: "1",
+                rounded: "full",
+                bg: "teal.500",
+                color: "white",
+              }}
             >
               My Arubaito.
             </Highlight>

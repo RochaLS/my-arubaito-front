@@ -22,6 +22,8 @@ import { FcCalendar } from "react-icons/fc";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { FcPieChart } from "react-icons/fc";
 
+import NextLink from "next/link";
+
 // app/page.tsx
 export default function Page() {
   return (
@@ -56,17 +58,21 @@ export default function Page() {
             </Heading>
 
             <Flex mt={10}>
-              <Button mr={5} size="lg" bgColor="teal.700" color="white">
-                Get Started
-              </Button>
-              <Button
-                size="lg"
-                bgColor="transparent"
-                border="3px solid white"
-                color="white"
-              >
-                Login
-              </Button>
+              <NextLink href="/signup">
+                <Button mr={5} size="lg" bgColor="teal.700" color="white">
+                  Get Started
+                </Button>
+              </NextLink>
+              <NextLink href="/login">
+                <Button
+                  size="lg"
+                  bgColor="transparent"
+                  border="3px solid white"
+                  color="white"
+                >
+                  Login
+                </Button>
+              </NextLink>
             </Flex>
           </Box>
           <Heading mt={10} textAlign="center">
