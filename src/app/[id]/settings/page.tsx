@@ -19,6 +19,13 @@ import {
   useBreakpointValue,
   Flex,
   Text,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
 } from "@chakra-ui/react";
 
 import NextLink from "next/link";
@@ -49,6 +56,28 @@ export default function page({ params }: SettingsPageProps) {
       }
     } catch (error) {
       console.log("Error " + error);
+    }
+  }
+
+  async function handleDeleteOnClick(id: string) {
+    const response = await fetch(
+      `http://localhost:8080/api/worker/delete/${id}`,
+      {
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "DELETE",
+        credentials: "include",
+      }
+    );
+
+    console.log(response);
+
+    if (!response.ok) {
+      throw new Error("Deletion failed, try again later.");
+    } else {
+      router.push("/");
     }
   }
 
@@ -99,9 +128,37 @@ export default function page({ params }: SettingsPageProps) {
               </Heading>
               <Flex align="center" justify="space-between" mb={2}>
                 <Text>Delete your account permanently</Text>
-                <Button size="sm" variant="outline" colorScheme="red">
-                  Delete account
-                </Button>
+
+                <Popover>
+                  <PopoverTrigger>
+                    <Button size="sm" variant="outline" colorScheme="red">
+                      Delete account
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent p={5}>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverHeader>Confirmation</PopoverHeader>
+                    <PopoverBody>
+                      <Text fontSize="md"></Text>
+                      <Text fontSize="md">
+                        Are you sure? All data will be lost and it's not
+                        recoverable.
+                      </Text>
+                      <Flex justifyContent="center" mt={5}>
+                        <Button
+                          colorScheme="red"
+                          ml={2.5}
+                          onClick={() => {
+                            handleDeleteOnClick(id);
+                          }}
+                        >
+                          Confirm
+                        </Button>
+                      </Flex>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
               </Flex>
             </Flex>
           </Box>
@@ -143,9 +200,36 @@ export default function page({ params }: SettingsPageProps) {
                 <Tr>
                   <Td>Delete your account permanently</Td>
                   <Td>
-                    <Button variant="outline" colorScheme="red">
-                      Delete my account
-                    </Button>
+                    <Popover>
+                      <PopoverTrigger>
+                        <Button variant="outline" colorScheme="red">
+                          Delete my account
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent w="100%">
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <PopoverHeader>Confirmation</PopoverHeader>
+                        <PopoverBody>
+                          <Text fontSize="md"></Text>
+                          <Text fontSize="md">
+                            Are you sure? All data will be lost and it's not
+                            recoverable.
+                          </Text>
+                          <Flex justifyContent="center" mt={5}>
+                            <Button
+                              colorScheme="red"
+                              ml={2.5}
+                              onClick={() => {
+                                handleDeleteOnClick(id);
+                              }}
+                            >
+                              Confirm
+                            </Button>
+                          </Flex>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
                   </Td>
                 </Tr>
               </Tfoot>
