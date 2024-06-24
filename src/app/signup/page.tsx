@@ -12,46 +12,75 @@ export default function Page() {
   const [authErrorMsg, setAuthErrorMsg] = useState("");
   const router = useRouter();
   const handleSignUpSubmit: SubmitHandler<FieldValues> = async (data) => {
-    try {
-      const response = await fetch("http://localhost:8080/api/worker/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          location: data.location,
-          password: data.password,
-        }),
-      });
-
-      if (!response.ok) {
-        setAuthErrorMsg("Error creating user. Try again later.");
-      } else {
-        // If everything is okay then login and redirect...
-        const authString = btoa(`${data.email}:${data.password}`);
-        const loginResponse = await fetch("http://localhost:8080/login", {
+    if (!(await userHasAccount(data.email))) {
+      try {
+        const response = await fetch("http://localhost:8080/api/worker/add", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Basic ${authString}`,
           },
-          credentials: "include",
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            location: data.location,
+            password: data.password,
+          }),
         });
 
-        if (!loginResponse.ok) {
-          setAuthErrorMsg("Something went wrong. Try again later.");
+        if (!response.ok) {
+          setAuthErrorMsg("Error creating user. Try again later.");
         } else {
-          const result = await loginResponse.json();
-          setAuthErrorMsg("");
-          router.push(`/${result}`);
+          // If everything is okay then login and redirect...
+          const authString = btoa(`${data.email}:${data.password}`);
+          const loginResponse = await fetch("http://localhost:8080/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Basic ${authString}`,
+            },
+            credentials: "include",
+          });
+
+          if (!loginResponse.ok) {
+            setAuthErrorMsg("Something went wrong. Try again later.");
+          } else {
+            const result = await loginResponse.json();
+            setAuthErrorMsg("");
+            router.push(`/${result}`);
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      setAuthErrorMsg("You already have an account please login.");
     }
   };
+
+  //Checks if user already has an account to avoid duplicate.
+  async function userHasAccount(email: string) {
+    console.log("called");
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/worker/check-account",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: email,
+        }
+      );
+
+      if (response.ok) {
+        const hasAccount = await response.json();
+        return hasAccount;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return null;
+    }
+  }
 
   return (
     <Box p={50}>
@@ -77,6 +106,7 @@ export default function Page() {
           ]}
           onSubmit={handleSignUpSubmit}
           formType="signup"
+          authErrorMsg={authErrorMsg}
         />
       </Flex>
     </Box>

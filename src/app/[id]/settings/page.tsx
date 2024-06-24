@@ -52,7 +52,7 @@ export default function page({ params }: SettingsPageProps) {
       if (!response.ok) {
         console.log("Logout failed.");
       } else {
-        router.push("/login");
+        router.push("/");
       }
     } catch (error) {
       console.log("Error " + error);
@@ -77,7 +77,7 @@ export default function page({ params }: SettingsPageProps) {
     if (!response.ok) {
       throw new Error("Deletion failed, try again later.");
     } else {
-      router.push("/");
+      handleLogout(); //Calls backend to invalidate session id and then redirect
     }
   }
 
