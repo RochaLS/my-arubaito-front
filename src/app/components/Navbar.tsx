@@ -18,7 +18,11 @@ export function Navbar({ currentUserId }: NavBarProps) {
   return (
     <Flex boxShadow="sm" bg="white" p={10} h={50} justify="space-between">
       <Center>
-        <Link as={NextLink} href="/" _hover={{ textDecoration: "none" }}>
+        <Link
+          as={NextLink}
+          href={dynamicPath}
+          _hover={{ textDecoration: "none" }}
+        >
           <Heading lineHeight="tall" size={["md", "lg"]}>
             <Highlight
               query="Arubaito."
