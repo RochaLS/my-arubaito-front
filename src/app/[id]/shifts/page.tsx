@@ -158,6 +158,7 @@ export default function Page({ params }: PageProps) {
                   <Th>Job ID</Th>
                   <Th>Date</Th>
                   <Th>Time</Th>
+                  <Th>Edit</Th>
                   <Th>Delete</Th>
                 </Tr>
               </Thead>
@@ -182,6 +183,14 @@ export default function Page({ params }: PageProps) {
                       <SkeletonText isLoaded={isLoaded}>
                         {shift.startTime} - {shift?.endTime}
                       </SkeletonText>
+                    </Td>
+
+                    <Td>
+                      <Link as={NextLink} href={`shifts/edit/${shift.id}`}>
+                        <Button variant="outline" colorScheme="teal">
+                          Edit
+                        </Button>
+                      </Link>
                     </Td>
 
                     <Td>
