@@ -37,18 +37,12 @@ export function JobForm({ data, onSubmit }: JobFormProps) {
     setValue,
   } = useForm({
     resolver: zodResolver(jobSchema),
-    defaultValues: {
-      hourlyRate: data?.hourlyRate !== undefined ? data.hourlyRate : "",
-      jobTitle: data?.jobTitle !== undefined ? data.jobTitle : "",
-    },
   });
 
   /*
   This sets the value when the component mounts, it's necessary for the edit to work correctly.
   There were cases where if the user doesn't update a a field validation wouldn't pass,
   even if the previous data is correct.
-  That's why in the resolver we need to set the default values right away and we need to values in the
-  useEffect as well.
   */
 
   useEffect(() => {
