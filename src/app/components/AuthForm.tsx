@@ -21,6 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, signUpSchema } from "../util/validationSchemas";
 
 import { SubmitHandler } from "react-hook-form";
+import Link from "next/link";
 
 interface Field {
   name: string;
@@ -46,6 +47,7 @@ export function AuthForm({
 }: AuthFormProps) {
   const primaryButtonText = formType === "login" ? "Login" : "Sign up";
   const secondaryButtonText = formType === "login" ? "Sign up" : "Login";
+  const secondaryButtonHref = formType === "login" ? "/signup" : "/login";
 
   // Schema comes from util/validationSchemas
   const schema = formType === "login" ? loginSchema : signUpSchema;
@@ -88,6 +90,14 @@ export function AuthForm({
           </FormControl>
         ))}
 
+        {formType === "login" && (
+          <Link href="/forgot-password">
+            <Button mt={5} variant="link" colorScheme="teal">
+              Forgot your password?
+            </Button>
+          </Link>
+        )}
+
         {formType === "signup" && (
           <Flex flexDirection="column" mb={5}>
             <FormControl isInvalid={!!errors.location}>
@@ -118,9 +128,11 @@ export function AuthForm({
           <Button type="submit" m={5} size="lg" colorScheme="teal" w="50%">
             {primaryButtonText}
           </Button>
-          <Button size="lg" colorScheme="teal" variant="link">
-            {secondaryButtonText}
-          </Button>
+          <Link href={secondaryButtonHref}>
+            <Button size="lg" colorScheme="teal" variant="link">
+              {secondaryButtonText}
+            </Button>
+          </Link>
         </Center>
       </form>
     </Box>

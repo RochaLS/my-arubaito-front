@@ -8,16 +8,28 @@ import {
   FormLabel,
   Heading,
   Input,
+  Text,
+  FormErrorMessage,
+  FormControl,
 } from "@chakra-ui/react";
 import { Logo } from "../components/Logo";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { sendPasswordRequestEmailSchema } from "../util/validationSchemas";
 
 export default function Page() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(sendPasswordRequestEmailSchema),
+  });
+
+  const [message, setMessage] = useState("");
+  const [alreadySubmitted, setAlreadySubmitted] = useState(false);
 
   const handleRequestSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -33,9 +45,13 @@ export default function Page() {
       );
 
       if (!response.ok) {
-        console.log("Something went wrong!");
+        setMessage("Something went wrong. Try again later.");
       } else {
-        console.log("email sent");
+        setMessage(
+          "We just sent you an email with instructions so you can reset your password."
+        );
+        reset();
+        setAlreadySubmitted(true);
       }
     } catch (error) {
       console.log(error);
@@ -67,18 +83,32 @@ export default function Page() {
             </Heading>
 
             <form onSubmit={handleSubmit(handleRequestSubmit)}>
-              <FormLabel>Email</FormLabel>
-              <Input
-                focusBorderColor="teal.500"
-                size="lg"
-                {...register("email", { required: true })}
-              />
+              <FormControl isInvalid={!!errors.email}>
+                <FormLabel>Email</FormLabel>
+                <Input
+                  focusBorderColor="teal.500"
+                  size="lg"
+                  {...register("email", { required: true })}
+                />
+
+                <FormErrorMessage>
+                  {errors.email && errors.email.message?.toString()}
+                </FormErrorMessage>
+              </FormControl>
 
               <Center mt={5}>
-                <Button type="submit" size="lg" colorScheme="teal">
+                <Button
+                  isDisabled={alreadySubmitted}
+                  type="submit"
+                  size="lg"
+                  colorScheme="teal"
+                >
                   Send Reset Email
                 </Button>
               </Center>
+              <Text textAlign="center" color="teal" mt={5}>
+                {message}
+              </Text>
             </form>
           </Box>
         </Box>

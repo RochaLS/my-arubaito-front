@@ -14,9 +14,16 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-export default function Page() {
+interface PasswordResetPageProps {
+  params: {
+    resetToken: string;
+  };
+}
+
+export default function Page({ params }: PasswordResetPageProps) {
   const {
     register,
     handleSubmit,
@@ -25,10 +32,34 @@ export default function Page() {
     resolver: zodResolver(resetPasswordSchema),
   });
 
+  const { resetToken } = params;
+
+  const router = useRouter();
+
   const handlePasswordChangeSubmit: SubmitHandler<FieldValues> = async (
     data
   ) => {
-    console.log(data);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/password-reset/reset?token=${resetToken}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: data.password,
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData.message);
+      } else {
+        router.push("/login");
+      }
+    } catch (error) {
+      console.log("error");
+    }
   };
 
   return (
