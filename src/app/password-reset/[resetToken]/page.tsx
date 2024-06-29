@@ -14,7 +14,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 export default function Page() {
   const {
@@ -24,6 +24,12 @@ export default function Page() {
   } = useForm({
     resolver: zodResolver(resetPasswordSchema),
   });
+
+  const handlePasswordChangeSubmit: SubmitHandler<FieldValues> = async (
+    data
+  ) => {
+    console.log(data);
+  };
 
   return (
     <Box>
@@ -49,12 +55,13 @@ export default function Page() {
               Create new password
             </Heading>
 
-            <form>
+            <form onSubmit={handleSubmit(handlePasswordChangeSubmit)}>
               <FormControl isInvalid={!!errors.password}>
                 <FormLabel>Password</FormLabel>
                 <Input
                   focusBorderColor="teal.500"
                   size="lg"
+                  type="password"
                   {...register("password", { required: true })}
                 />
                 <FormErrorMessage>
@@ -66,6 +73,7 @@ export default function Page() {
                 <Input
                   focusBorderColor="teal.500"
                   size="lg"
+                  type="password"
                   {...register("confirm_password", { required: true })}
                 />
                 <FormErrorMessage>
