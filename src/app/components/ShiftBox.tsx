@@ -1,5 +1,6 @@
 import { Heading, Text, Flex, SkeletonText } from "@chakra-ui/react";
 import { Shift } from "../util/fetchShifts";
+import { convertTime } from "../util/date";
 
 interface ShiftBoxProps {
   nextShift: {
@@ -11,6 +12,14 @@ interface ShiftBoxProps {
 }
 
 export function ShiftBox({ nextShift, isLoaded }: ShiftBoxProps) {
+  const dateParts = nextShift.shift?.startDate.split("-");
+  //Temporary solution, wanna deal timezones as well in a later point
+
+  let dateString = "";
+  if (dateParts) {
+    dateString = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+  }
+
   return (
     <Flex
       boxShadow="sm"
@@ -32,16 +41,17 @@ export function ShiftBox({ nextShift, isLoaded }: ShiftBoxProps) {
         ) : (
           <>
             <Text boxShadow="sm" fontSize="lg" m={2}>
-              Date: {nextShift.shift?.startDate}
+              Date: {dateString}
             </Text>
             <Text boxShadow="sm" fontSize="lg" m={2}>
-              Time: {nextShift.shift?.startTime} - {nextShift.shift?.endTime}
+              Time: {convertTime(nextShift.shift?.startTime)} -{" "}
+              {convertTime(nextShift.shift?.endTime)}
             </Text>
             <Text boxShadow="sm" fontSize="lg" m={2}>
               Type: {nextShift.shift?.shiftType}
             </Text>
             <Text boxShadow="sm" fontSize="lg" m={2}>
-              Total hours: {nextShift.totalHours}
+              Total hours: {nextShift.totalHours?.toFixed(2)}
             </Text>
             <Text boxShadow="sm" fontSize="lg" m={2}>
               Money value:{" "}

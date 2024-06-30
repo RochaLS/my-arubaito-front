@@ -1,6 +1,7 @@
 import { Box, Flex, Text, Icon, Skeleton } from "@chakra-ui/react";
 import { LuSunrise, LuSun, LuMoonStar } from "react-icons/lu";
 import { Shift } from "../util/fetchShifts";
+import { convertTime } from "../util/date";
 
 interface ListShiftCardProps {
   shift: Shift;
@@ -16,7 +17,7 @@ export function ListShiftCard({ shift, isLoaded }: ListShiftCardProps) {
       <Box>
         <Text fontSize="xl">{dateString}</Text>
         <Text color="teal.500" fontSize="xl">
-          {shift.startTime} - {shift.endTime}
+          {convertTime(shift.startTime)} - {convertTime(shift.endTime)}
         </Text>
       </Box>
       {shift.shiftType === "Opening" && <LuSunrise size={24} color="teal" />}

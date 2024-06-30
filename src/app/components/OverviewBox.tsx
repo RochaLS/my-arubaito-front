@@ -42,8 +42,10 @@ export function OverviewBox({ data, isLoaded }: OverviewBoxProps) {
             <Text fontSize="xl">Total gross pay: {data.totalGrossPay}</Text>
             <Text fontSize="lg">Number of shifts: {data.numOfShifts}</Text>
             <Flex justify="space-between">
-              <Text fontSize="lg">Total hours: {data.totalHours}</Text>
-              <Button colorScheme="teal">See details</Button>
+              <Text fontSize="lg">
+                Total hours: {data.totalHours.toFixed(2)}
+              </Text>
+              {/* <Button colorScheme="teal">See details</Button> */}
             </Flex>
           </>
         )}

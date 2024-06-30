@@ -28,6 +28,7 @@ import { formatDate } from "@/app/util/dateFormatting";
 import { IoIosWarning } from "react-icons/io";
 import { ErrorBanner } from "@/app/components/ErrorBanner";
 import { Copyright } from "@/app/components/Copyright";
+import { convertTime } from "@/app/util/date";
 
 interface PageProps {
   params: {
@@ -181,7 +182,8 @@ export default function Page({ params }: PageProps) {
 
                     <Td>
                       <SkeletonText isLoaded={isLoaded}>
-                        {shift.startTime} - {shift?.endTime}
+                        {convertTime(shift.startTime)} -{" "}
+                        {convertTime(shift?.endTime)}
                       </SkeletonText>
                     </Td>
 
