@@ -75,7 +75,7 @@ export function AuthForm({
 
       <form method="POST" onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field) => (
-          <FormControl isInvalid={!!errors[field.name]}>
+          <FormControl key={field.name} isInvalid={!!errors[field.name]}>
             <FormLabel mt={5}>{field.label}</FormLabel>
             <Input
               focusBorderColor="teal.500"
