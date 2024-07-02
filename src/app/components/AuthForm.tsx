@@ -12,6 +12,7 @@ import {
   Flex,
   FormLabel,
   FormErrorMessage,
+  Link,
 } from "@chakra-ui/react";
 
 import { provinces } from "../data/provinces";
@@ -21,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, signUpSchema } from "../util/validationSchemas";
 
 import { SubmitHandler } from "react-hook-form";
-import Link from "next/link";
+import NextLink from "next/link";
 
 interface Field {
   name: string;
@@ -96,6 +97,31 @@ export function AuthForm({
               Forgot your password?
             </Button>
           </Link>
+        )}
+        {formType === "signup" && (
+          <Text fontSize="md" mt={10}>
+            By clicking the button below you agree to our{" "}
+            <Link
+              textDecor="underline"
+              color="teal"
+              href="/legal/tos"
+              target="_blank"
+              as={NextLink}
+            >
+              terms of use
+            </Link>{" "}
+            and{" "}
+            <Link
+              textDecor="underline"
+              color="teal"
+              href="/legal/privacy-policy"
+              target="_blank"
+              as={NextLink}
+            >
+              privacy policy
+            </Link>
+            .
+          </Text>
         )}
 
         {/* {formType === "signup" && (
