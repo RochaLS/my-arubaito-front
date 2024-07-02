@@ -98,7 +98,7 @@ export function AuthForm({
           </Link>
         )}
 
-        {formType === "signup" && (
+        {/* {formType === "signup" && (
           <Flex flexDirection="column" mb={5}>
             <FormControl isInvalid={!!errors.location}>
               <FormLabel mt={5}>Location</FormLabel>
@@ -118,7 +118,7 @@ export function AuthForm({
               </FormErrorMessage>
             </FormControl>
           </Flex>
-        )}
+        )} */}
         {authErrorMsg && (
           <Text color="red" mt={5}>
             {authErrorMsg}
