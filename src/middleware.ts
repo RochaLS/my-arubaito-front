@@ -23,7 +23,11 @@ export async function middleware(req: NextRequest) {
 
   const publicPaths = ["/login", "/signup", "/", "/forgot-password"];
   const basePath = url.pathname.split("/")[1];
-  if (publicPaths.includes(url.pathname) || basePath === "password-reset") {
+  if (
+    publicPaths.includes(url.pathname) ||
+    basePath === "password-reset" ||
+    basePath === "legal"
+  ) {
     return NextResponse.next();
   }
 
