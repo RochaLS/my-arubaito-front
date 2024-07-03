@@ -82,7 +82,7 @@ export default function Page({ params }: PageProps) {
       credentials: "include",
     });
 
-    console.log(response);
+    // console.log(response);
 
     if (!response.ok) {
       throw new Error("Deletion failed, try again later.");
