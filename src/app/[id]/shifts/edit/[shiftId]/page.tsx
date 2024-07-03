@@ -48,7 +48,7 @@ export default function Page({ params }: ShiftEditPageProps) {
   const handleShiftUpdate: SubmitHandler<FieldValues> = async (data) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/shift/update/${shiftId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/shift/update/${shiftId}`,
         {
           method: "PUT",
           headers: {

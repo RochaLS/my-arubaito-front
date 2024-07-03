@@ -14,32 +14,38 @@ export default function Page() {
   const handleSignUpSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (!(await userHasAccount(data.email))) {
       try {
-        const response = await fetch("http://localhost:8080/api/worker/add", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: data.name,
-            email: data.email,
-            location: data.location,
-            password: data.password,
-          }),
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/worker/add`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: data.name,
+              email: data.email,
+              location: data.location,
+              password: data.password,
+            }),
+          }
+        );
 
         if (!response.ok) {
           setAuthErrorMsg("Error creating user. Try again later.");
         } else {
           // If everything is okay then login and redirect...
           const authString = btoa(`${data.email}:${data.password}`);
-          const loginResponse = await fetch("http://localhost:8080/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Basic ${authString}`,
-            },
-            credentials: "include",
-          });
+          const loginResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/login`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Basic ${authString}`,
+              },
+              credentials: "include",
+            }
+          );
 
           if (!loginResponse.ok) {
             setAuthErrorMsg("Something went wrong. Try again later.");
@@ -62,7 +68,7 @@ export default function Page() {
     console.log("called");
     try {
       const response = await fetch(
-        "http://localhost:8080/api/worker/check-account",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/worker/check-account`,
         {
           method: "POST",
           headers: {

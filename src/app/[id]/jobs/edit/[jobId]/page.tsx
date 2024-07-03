@@ -16,14 +16,17 @@ interface JobEditPageProps {
 }
 
 async function getData(id: string) {
-  const response = await fetch(`http://localhost:8080/api/job/${id}`, {
-    method: "GET",
-    cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/job/${id}`,
+    {
+      method: "GET",
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
 
   checkResponse(response);
 

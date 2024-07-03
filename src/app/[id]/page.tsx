@@ -19,9 +19,9 @@ interface PageProps {
 
 async function getData(id: string) {
   const response = await fetch(
-    `http://localhost:8080/api/income/${id}/calculate?date=${new Date()
-      .toISOString()
-      .slice(0, 10)}`,
+    `${
+      process.env.NEXT_PUBLIC_API_URL
+    }/api/income/${id}/calculate?date=${new Date().toISOString().slice(0, 10)}`,
     {
       cache: "no-store",
       headers: {
@@ -70,7 +70,7 @@ export default function Page({ params }: PageProps) {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   if (error && error !== "404") {
     return <ErrorBanner currentUserId={id} message={error} />;

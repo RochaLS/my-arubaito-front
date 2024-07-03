@@ -32,14 +32,17 @@ interface PageProps {
 }
 
 async function getData(id: string) {
-  const response = await fetch(`http://localhost:8080/api/job/byWorker/${id}`, {
-    method: "GET",
-    cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/job/byWorker/${id}`,
+    {
+      method: "GET",
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
 
   checkResponse(response); // Checks the response and sets and throws respective error.
 
@@ -70,22 +73,28 @@ export default function Page({ params }: PageProps) {
       }
     };
     fetchData();
-  }, [data]);
+  }, [id]);
 
   async function handleOnClick(id: number) {
-    const response = await fetch(`http://localhost:8080/api/job/delete/${id}`, {
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-      credentials: "include",
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/job/delete/${id}`,
+      {
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "DELETE",
+        credentials: "include",
+      }
+    );
 
     // console.log(response);
 
     if (!response.ok) {
       throw new Error("Deletion failed, try again later.");
+    } else {
+      const updatedJobs = data.filter((job) => job.id !== id);
+      setData(updatedJobs);
     }
   }
 

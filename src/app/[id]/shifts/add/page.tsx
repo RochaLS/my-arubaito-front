@@ -43,22 +43,25 @@ export default function Page({ params }: ShiftAddPageProps) {
   const handleShiftSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data.date);
     try {
-      const response = await fetch("http://localhost:8080/api/shift/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          startDate: data.date,
-          startTime: data.startTime,
-          endDate: data.date,
-          endTime: data.endTime,
-          shiftType: data.shiftType,
-          job_id: data.job,
-          worker_id: id,
-        }),
-        credentials: "include", // Our backend is separate, not same domain so we need this.
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/shift/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            startDate: data.date,
+            startTime: data.startTime,
+            endDate: data.date,
+            endTime: data.endTime,
+            shiftType: data.shiftType,
+            job_id: data.job,
+            worker_id: id,
+          }),
+          credentials: "include", // Our backend is separate, not same domain so we need this.
+        }
+      );
 
       if (!response.ok) {
         setErrorMsg("Error adding shift. Try again later.");

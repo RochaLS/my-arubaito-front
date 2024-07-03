@@ -17,18 +17,18 @@ import {
   useBreakpointValue,
   Link,
   Text,
-  SkeletonText,
   Skeleton,
+  SkeletonText,
 } from "@chakra-ui/react";
 import { Navbar } from "../../components/Navbar";
 import NextLink from "next/link";
 import { Shift, getData } from "@/app/util/fetchShifts";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/app/util/dateFormatting";
+import { convertTime } from "@/app/util/date";
 import { IoIosWarning } from "react-icons/io";
 import { ErrorBanner } from "@/app/components/ErrorBanner";
 import { Copyright } from "@/app/components/Copyright";
-import { convertTime } from "@/app/util/date";
 
 interface PageProps {
   params: {
@@ -60,7 +60,7 @@ export default function Page({ params }: PageProps) {
       }
     };
     fetchData();
-  }, [data]);
+  }, [id]);
 
   if (error && error !== "404") {
     return <ErrorBanner currentUserId={id} message={error} />;
@@ -68,7 +68,7 @@ export default function Page({ params }: PageProps) {
 
   async function handleOnClick(id: number) {
     const response = await fetch(
-      `http://localhost:8080/api/shift/delete/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/shift/delete/${id}`,
       {
         cache: "no-store",
         headers: {
@@ -81,6 +81,11 @@ export default function Page({ params }: PageProps) {
 
     if (!response.ok) {
       throw new Error("Deletion failed, try again later.");
+    } else {
+      const updatedShifts = data.shifts.filter(
+        (shift: Shift) => shift.id !== id
+      );
+      setData({ ...data, shifts: updatedShifts });
     }
   }
 
@@ -110,12 +115,13 @@ export default function Page({ params }: PageProps) {
               >
                 <Flex justify="space-between" mb={2}>
                   <Box>
-                    <SkeletonText isLoaded={isLoaded}>
+                    <Skeleton isLoaded={isLoaded}>
                       <Text fontSize="lg">{formatDate(shift.startDate)}</Text>
                       <Text fontSize="lg">
-                        {shift.startTime} - {shift.endTime}
+                        {convertTime(shift.startTime)} -{" "}
+                        {convertTime(shift.endTime)}
                       </Text>
-                    </SkeletonText>
+                    </Skeleton>
                   </Box>
                   <Skeleton isLoaded={isLoaded}>
                     <Text>Job ID: {shift.job_id}</Text>
@@ -167,26 +173,19 @@ export default function Page({ params }: PageProps) {
                 {data?.shifts.map((shift: Shift, index: number) => (
                   <Tr key={index}>
                     <Td>
-                      {" "}
-                      <SkeletonText isLoaded={isLoaded}>
-                        {shift.job_id}
-                      </SkeletonText>
+                      <Skeleton isLoaded={isLoaded}>{shift.job_id}</Skeleton>
                     </Td>
-
                     <Td>
-                      {" "}
-                      <SkeletonText isLoaded={isLoaded}>
-                        {formatDate(shift.startDate)}{" "}
-                      </SkeletonText>
+                      <Skeleton isLoaded={isLoaded}>
+                        {formatDate(shift.startDate)}
+                      </Skeleton>
                     </Td>
-
                     <Td>
-                      <SkeletonText isLoaded={isLoaded}>
+                      <Skeleton isLoaded={isLoaded}>
                         {convertTime(shift.startTime)} -{" "}
-                        {convertTime(shift?.endTime)}
-                      </SkeletonText>
+                        {convertTime(shift.endTime)}
+                      </Skeleton>
                     </Td>
-
                     <Td>
                       <Link as={NextLink} href={`shifts/edit/${shift.id}`}>
                         <Button variant="outline" colorScheme="teal">
@@ -194,9 +193,8 @@ export default function Page({ params }: PageProps) {
                         </Button>
                       </Link>
                     </Td>
-
                     <Td>
-                      <SkeletonText isLoaded={isLoaded}>
+                      <Skeleton isLoaded={isLoaded}>
                         <Button
                           variant="outline"
                           colorScheme="red"
@@ -206,7 +204,7 @@ export default function Page({ params }: PageProps) {
                         >
                           Remove
                         </Button>
-                      </SkeletonText>
+                      </Skeleton>
                     </Td>
                   </Tr>
                 ))}

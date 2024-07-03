@@ -20,18 +20,21 @@ export default function Page({ params }: JobAddPageProps) {
 
   const handleJobSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const response = await fetch("http://localhost:8080/api/job/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          hourlyRate: data.hourlyRate,
-          title: data.jobTitle,
-          workerId: id,
-        }),
-        credentials: "include", // Our backend is separate, not same domain so we need this.
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            hourlyRate: data.hourlyRate,
+            title: data.jobTitle,
+            workerId: id,
+          }),
+          credentials: "include", // Our backend is separate, not same domain so we need this.
+        }
+      );
 
       if (!response.ok) {
         setAuthErrorMsg("Error adding job. Try again later.");

@@ -41,7 +41,7 @@ export default function Page({ params }: PasswordResetPageProps) {
   ) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/password-reset/reset?token=${resetToken}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/password-reset/reset?token=${resetToken}`,
         {
           method: "POST",
           headers: {

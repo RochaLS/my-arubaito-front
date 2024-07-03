@@ -34,7 +34,7 @@ export default function Page() {
   const handleRequestSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const response = await fetch(
-        "http://localhost:8080/password-reset/request",
+        `${process.env.NEXT_PUBLIC_API_URL}/password-reset/request`,
         {
           method: "POST",
           headers: {
