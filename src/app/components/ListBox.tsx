@@ -17,6 +17,7 @@ export function ListBox({ shifts, isLoaded }: ListBoxProps) {
       boxShadow="sm"
       bg="white"
       w={["90%", "70", "60%", "50%"]}
+      minH="30%"
       m={[5, 5, 5, 10]}
       p={5}
     >
