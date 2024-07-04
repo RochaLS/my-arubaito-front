@@ -17,9 +17,9 @@ export default function Page() {
           1. Introduction
         </Heading>
         <Text mt="2">
-          This Privacy Policy explains how My Arubaito (“we”, “our”, or “us”)
-          collects, uses, shares, and protects your personal information when
-          you use our Service.
+          This Privacy Policy explains how My Arubaito (&apos;we&apos;,
+          &apos;our&apos;, or &apos;us&apos;) collects, uses, shares, and
+          protects your personal information when you use our Service.
         </Text>
 
         <Heading as="h2" size="md" mt="6">
@@ -102,7 +102,7 @@ export default function Page() {
         </UnorderedList>
 
         <Heading as="h2" size="md" mt="6">
-          7. Children's Online Privacy Protection Act (COPPA)
+          7. Children&apos;s Online Privacy Protection Act (COPPA)
         </Heading>
         <Text mt="2">
           Our Service is not directed to children under the age of 13. We do not

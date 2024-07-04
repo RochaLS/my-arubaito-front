@@ -43,7 +43,7 @@ export default function Page({ params }: ShiftEditPageProps) {
     };
 
     fetchData();
-  }, []);
+  }, [id, router, shiftId]);
 
   const handleShiftUpdate: SubmitHandler<FieldValues> = async (data) => {
     try {

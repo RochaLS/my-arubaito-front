@@ -70,7 +70,7 @@ export default function Page({ params }: PageProps) {
       }
     };
     fetchData();
-  }, [id]);
+  }, [id, router]);
 
   if (error && error !== "404") {
     return <ErrorBanner currentUserId={id} message={error} />;

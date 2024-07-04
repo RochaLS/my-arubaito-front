@@ -15,6 +15,8 @@ export default function Page() {
   const handleLoginSubmit: SubmitHandler<FieldValues> = async (data) => {
     const authString = btoa(`${data.email}:${data.password}`);
 
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}/login`);
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
         method: "POST",

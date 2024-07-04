@@ -37,7 +37,7 @@ interface SettingsPageProps {
   };
 }
 
-export default function page({ params }: SettingsPageProps) {
+export default function Page({ params }: SettingsPageProps) {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const router = useRouter();
   const { id } = params;
@@ -145,7 +145,7 @@ export default function page({ params }: SettingsPageProps) {
                     <PopoverBody>
                       <Text fontSize="md"></Text>
                       <Text fontSize="md">
-                        Are you sure? All data will be lost and it's not
+                        Are you sure? All data will be lost and it&apos;s not
                         recoverable.
                       </Text>
                       <Flex justifyContent="center" mt={5}>
@@ -216,8 +216,8 @@ export default function page({ params }: SettingsPageProps) {
                         <PopoverBody>
                           <Text fontSize="md"></Text>
                           <Text fontSize="md">
-                            Are you sure? All data will be lost and it's not
-                            recoverable.
+                            Are you sure? All data will be lost and it&apos;s
+                            not recoverable.
                           </Text>
                           <Flex justifyContent="center" mt={5}>
                             <Button

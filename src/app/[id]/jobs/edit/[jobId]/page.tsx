@@ -50,7 +50,7 @@ export default function Page({ params }: JobEditPageProps) {
       }
     };
     fetchData();
-  }, [jobId]);
+  }, [jobId, router]);
 
   const handleJobUpdate: SubmitHandler<FieldValues> = async (data) => {
     try {

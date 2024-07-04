@@ -1,3 +1,4 @@
+import Error from "next/error";
 import { NextRequest, NextResponse } from "next/server";
 
 /*
@@ -10,7 +11,8 @@ to make sure users can't see other's data.
 
 export async function middleware(req: NextRequest) {
   const sessionId = req.cookies.get("JSESSIONID");
-  const url = new URL(req.url, "http://localhost:3000");
+  const url = new URL(req.url, process.env.NEXT_PUBLIC_WEB_APP_URL);
+  console.log(url.toString());
   console.log(`===============\nSession id: ${sessionId?.value}`);
 
   if (
@@ -43,34 +45,44 @@ export async function middleware(req: NextRequest) {
   // Additional logging to check headers and request details
   console.log(`Request headers: ${JSON.stringify(req.headers)}`);
 
-  const response = await fetch(
-    `http://localhost:8080/api/validate-session?userId=${userId}`,
-    {
-      method: "GET",
-      headers: {
-        Cookie: `JSESSIONID=${sessionId.value}`,
-      },
-    }
+  console.log(process.env.NEXT_PUBLIC_API_URL);
+
+  console.log(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/validate-session?userId=${userId}`
   );
 
-  console.log(`Response status from session validation: ${response.status}`);
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/validate-session?userId=${userId}`,
+      {
+        method: "GET",
+        headers: {
+          Cookie: `JSESSIONID=${sessionId.value}`,
+        },
+      }
+    );
 
-  if (!response.ok) {
-    const currentUserId = await response.text();
-    console.log(currentUserId);
+    console.log(`Response status from session validation: ${response.status}`);
 
-    if (currentUserId === "") {
-      url.pathname = "/login";
-      return NextResponse.redirect(url.toString());
+    if (!response.ok) {
+      const currentUserId = await response.text();
+      console.log(currentUserId);
+
+      if (currentUserId === "") {
+        url.pathname = "/login";
+        return NextResponse.redirect(url.toString());
+      }
+      // userId in path
+      if (currentUserId !== userId) {
+        url.pathname = `/${currentUserId}`;
+        console.log("Correct user id: " + currentUserId);
+        console.log("Redirecting to correct user ID URL");
+        return NextResponse.redirect(url.toString());
+      }
     }
-    // userId in path
-    if (currentUserId !== userId) {
-      url.pathname = `/${currentUserId}`;
-      console.log("Correct user id: " + currentUserId);
-      console.log("Redirecting to correct user ID URL");
-      return NextResponse.redirect(url.toString());
-    }
+
+    return NextResponse.next();
+  } catch (error) {
+    console.log("ERROR HERE!!!!!!!!!!!!!!!!!!: ");
   }
-
-  return NextResponse.next();
 }

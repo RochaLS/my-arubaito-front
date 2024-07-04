@@ -38,7 +38,7 @@ export default function Page({ params }: ShiftAddPageProps) {
     };
 
     fetchData();
-  }, []);
+  }, [id, router]);
 
   const handleShiftSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data.date);
