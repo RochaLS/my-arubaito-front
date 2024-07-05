@@ -60,7 +60,6 @@ export async function middleware(req: NextRequest) {
         headers: {
           Cookie: `JSESSIONID=${sessionId.value}`,
         },
-        credentials: "include",
       }
     );
 
