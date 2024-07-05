@@ -57,7 +57,6 @@ export async function middleware(req: NextRequest) {
       `${process.env.NEXT_PUBLIC_API_URL}/api/validate-session?userId=${userId}`,
       {
         method: "GET",
-        credentials: "include",
         headers: {
           Cookie: `JSESSIONID=${sessionId.value}`,
         },
