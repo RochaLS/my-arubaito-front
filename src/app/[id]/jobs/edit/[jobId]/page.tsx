@@ -55,7 +55,7 @@ export default function Page({ params }: JobEditPageProps) {
   const handleJobUpdate: SubmitHandler<FieldValues> = async (data) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/job/update/${jobId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job/update/${jobId}`,
         {
           method: "PUT",
           headers: {
