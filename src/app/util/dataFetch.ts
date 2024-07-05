@@ -1,11 +1,14 @@
 export async function getJobsByWorker(id: string) {
-  const response = await fetch(`http://localhost:8080/api/job/byWorker/${id}`, {
-    cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/job/byWorker/${id}`,
+    {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
 
   const data = await response.json();
 
@@ -25,13 +28,16 @@ export async function getJobsByWorker(id: string) {
 }
 
 export async function getShiftById(id: string) {
-  const response = await fetch(`http://localhost:8080/api/shift/${id}`, {
-    cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/shift/${id}`,
+    {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
 
   const data = await response.json();
 
