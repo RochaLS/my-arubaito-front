@@ -89,7 +89,7 @@ export default function Page() {
   }
 
   return (
-    <Box p={50}>
+    <Box p={[0, 50]}>
       <Flex flexDir="column" w="100%" h="100%" justify="center" align="center">
         <Logo />
         <AuthForm
