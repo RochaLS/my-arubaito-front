@@ -69,7 +69,7 @@ export function ShiftForm({ shiftData, jobs, onSubmit }: ShiftFormProps) {
   }, [shiftData, isEditForm, setValue]);
 
   return (
-    <Box p={50}>
+    <Box p={[0, 50]}>
       <Flex flexDir="column" w="100%" h="100%" justify="center" align="center">
         <Box
           m={[5, 0]}
