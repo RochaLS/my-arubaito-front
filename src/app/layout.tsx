@@ -18,22 +18,31 @@ export default function RootLayout({
     <html lang="en">
       <Head>
         {/* Open Graph meta tags */}
-        <meta property="og:url" content={siteUrl} />
+
+        <title>My Arubaito</title>
+        <meta name="title" content="My Arubaito" />
+        <meta
+          name="description"
+          content="Get income predictions for your part-time job."
+        />
+
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.myarubaito.com/" />
         <meta property="og:title" content="My Arubaito" />
         <meta
           property="og:description"
           content="Get income predictions for your part-time job."
         />
-        <meta property="og:image" content={siteUrl + ogImageUrl} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@lsrocha_dev" />
-        <meta name="twitter:title" content="My Arubaito" />
+        <meta property="og:image" content="public/images/card-img.png" />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.myarubaito.com/" />
+        <meta property="twitter:title" content="My Arubaito" />
         <meta
-          name="twitter:description"
+          property="twitter:description"
           content="Get income predictions for your part-time job."
         />
-        <meta name="twitter:image" content={siteUrl + ogImageUrl} />
+        <meta property="twitter:image" content="public/images/card-img.png" />
       </Head>
       <body>
         <Providers>{children}</Providers>
