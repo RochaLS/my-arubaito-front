@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     siteName: "My Arubaito",
     images: [
       {
-        url: "public/images/card-img.png",
+        url: "https://www.myarubaito.com/images/card-img.png",
         width: 800,
         height: 600,
       },
