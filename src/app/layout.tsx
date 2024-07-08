@@ -3,8 +3,11 @@ import Head from "next/head";
 import { Providers } from "./providers";
 import { Metadata } from "next";
 
+const metadataBase = new URL("https://www.myarubaito.com");
+
 export const metadata: Metadata = {
   title: "My Arubaito",
+  metadataBase: metadataBase,
   openGraph: {
     title: "My Arubaito",
     description: "Get income predictions for your part-time job.",
