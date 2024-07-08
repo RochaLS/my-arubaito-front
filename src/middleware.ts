@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
   if (
     req.nextUrl.pathname.startsWith("/_next") ||
     req.nextUrl.pathname.startsWith("/images") ||
-    req.nextUrl.pathname.startsWith("/favicon.ico")
+    req.nextUrl.pathname.startsWith("/icon.ico")
   ) {
     return NextResponse.next();
   }

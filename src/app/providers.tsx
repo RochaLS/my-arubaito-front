@@ -1,6 +1,7 @@
 "use client";
 
 import { ChakraProvider, Box } from "@chakra-ui/react";
+import Head from "next/head";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
