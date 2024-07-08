@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const siteUrl = "https://www.myarubaito.com";
-  const ogImageUrl = "/images/card-img.png";
+  const ogImageUrl = "/public/images/card-img.png";
   return (
     <html lang="en">
       <Head>
@@ -33,7 +33,7 @@ export default function RootLayout({
           property="og:description"
           content="Get income predictions for your part-time job."
         />
-        <meta property="og:image" content="public/images/card-img.png" />
+        <meta property="og:image" content={siteUrl + ogImageUrl} />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://www.myarubaito.com/" />
@@ -42,7 +42,7 @@ export default function RootLayout({
           property="twitter:description"
           content="Get income predictions for your part-time job."
         />
-        <meta property="twitter:image" content="public/images/card-img.png" />
+        <meta name="twitter:image" content={siteUrl + ogImageUrl} />
       </Head>
       <body>
         <Providers>{children}</Providers>
