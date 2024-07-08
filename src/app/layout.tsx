@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const siteUrl = "https://www.myarubaito.com";
-  const ogImageUrl = "/public/images/card-img.png";
+  const ogImageUrl = "/images/card-img.png";
   return (
     <html lang="en">
       <Head>
