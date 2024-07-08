@@ -9,14 +9,7 @@ export const metadata: Metadata = {
     title: "My Arubaito",
     description: "Get income predictions for your part-time job.",
     url: "https://www.myarubaito.com",
-    siteName: "Next.js",
-    images: [
-      {
-        url: "https://www.myarubaito.com/images/card-img.png",
-        width: 800,
-        height: 600,
-      },
-    ],
+    siteName: "My Arubaito",
     locale: "en_US",
     type: "website",
   },
