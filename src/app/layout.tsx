@@ -5,6 +5,21 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "My Arubaito",
+  openGraph: {
+    title: "My Arubaito",
+    description: "Get income predictions for your part-time job.",
+    url: "https://www.myarubaito.com",
+    siteName: "Next.js",
+    images: [
+      {
+        url: "https://www.myarubaito.com/images/card-img.png",
+        width: 800,
+        height: 600,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -14,6 +29,8 @@ export default function RootLayout({
 }) {
   const siteUrl = "https://www.myarubaito.com";
   const ogImageUrl = "/images/card-img.png";
+
+  console.log(siteUrl + ogImageUrl);
   return (
     <html lang="en">
       <Head>
@@ -26,7 +43,7 @@ export default function RootLayout({
           content="Get income predictions for your part-time job."
         />
 
-        <meta property="og:type" content="website" />
+        {/* <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.myarubaito.com/" />
         <meta property="og:title" content="My Arubaito" />
         <meta
@@ -42,7 +59,7 @@ export default function RootLayout({
           property="twitter:description"
           content="Get income predictions for your part-time job."
         />
-        <meta name="twitter:image" content={siteUrl + ogImageUrl} />
+        <meta name="twitter:image" content={siteUrl + ogImageUrl} /> */}
       </Head>
       <body>
         <Providers>{children}</Providers>
