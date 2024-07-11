@@ -43,6 +43,9 @@ export default function Page({ params }: PageProps) {
   const [data, setData] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmittingShiftId, setIsSubmittingShiftId] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,25 +70,32 @@ export default function Page({ params }: PageProps) {
   }
 
   async function handleOnClick(id: number) {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/shift/delete/${id}`,
-      {
-        cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "DELETE",
-        credentials: "include",
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Deletion failed, try again later.");
-    } else {
-      const updatedShifts = data.shifts.filter(
-        (shift: Shift) => shift.id !== id
+    setIsSubmittingShiftId(id);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/shift/delete/${id}`,
+        {
+          cache: "no-store",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "DELETE",
+          credentials: "include",
+        }
       );
-      setData({ ...data, shifts: updatedShifts });
+
+      if (!response.ok) {
+        throw new Error("Deletion failed, try again later.");
+      } else {
+        const updatedShifts = data.shifts.filter(
+          (shift: Shift) => shift.id !== id
+        );
+        setData({ ...data, shifts: updatedShifts });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmittingShiftId(null);
     }
   }
 
@@ -136,6 +146,8 @@ export default function Page({ params }: PageProps) {
                       onClick={() => {
                         handleOnClick(shift.id);
                       }}
+                      isDisabled={isSubmittingShiftId === shift.id}
+                      isLoading={isSubmittingShiftId === shift.id}
                     >
                       Remove
                     </Button>
@@ -201,6 +213,8 @@ export default function Page({ params }: PageProps) {
                           onClick={() => {
                             handleOnClick(shift.id);
                           }}
+                          isDisabled={isSubmittingShiftId === shift.id}
+                          isLoading={isSubmittingShiftId === shift.id}
                         >
                           Remove
                         </Button>
