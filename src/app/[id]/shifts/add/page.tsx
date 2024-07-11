@@ -18,6 +18,7 @@ export default function Page({ params }: ShiftAddPageProps) {
   const { id } = params;
   const [data, setData] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -41,7 +42,7 @@ export default function Page({ params }: ShiftAddPageProps) {
   }, [id, router]);
 
   const handleShiftSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data.date);
+    setIsSubmitting(true);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/shift/add`,
@@ -71,6 +72,8 @@ export default function Page({ params }: ShiftAddPageProps) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -81,7 +84,11 @@ export default function Page({ params }: ShiftAddPageProps) {
   return (
     <>
       <Navbar currentUserId={id} />
-      <ShiftForm jobs={data} onSubmit={handleShiftSubmit} />
+      <ShiftForm
+        isSubmitting={isSubmitting}
+        jobs={data}
+        onSubmit={handleShiftSubmit}
+      />
     </>
   );
 }

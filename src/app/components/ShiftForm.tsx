@@ -34,9 +34,15 @@ interface ShiftFormProps {
   onSubmit: SubmitHandler<FieldValues>;
   shiftData?: FieldData;
   jobs: Job[];
+  isSubmitting: boolean;
 }
 
-export function ShiftForm({ shiftData, jobs, onSubmit }: ShiftFormProps) {
+export function ShiftForm({
+  shiftData,
+  jobs,
+  onSubmit,
+  isSubmitting,
+}: ShiftFormProps) {
   const {
     register,
     handleSubmit,
@@ -162,7 +168,15 @@ export function ShiftForm({ shiftData, jobs, onSubmit }: ShiftFormProps) {
               </FormErrorMessage>
             </FormControl>
             <Center>
-              <Button m={5} size="lg" colorScheme="teal" w="50%" type="submit">
+              <Button
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
+                m={5}
+                size="lg"
+                colorScheme="teal"
+                w="50%"
+                type="submit"
+              >
                 {isEditForm ? "Confirm" : "Add"}
               </Button>
             </Center>
