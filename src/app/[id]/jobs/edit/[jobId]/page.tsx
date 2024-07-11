@@ -37,6 +37,7 @@ export default function Page({ params }: JobEditPageProps) {
   const { id, jobId } = params;
   const [data, setData] = useState<Job>();
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,6 +54,7 @@ export default function Page({ params }: JobEditPageProps) {
   }, [jobId, router]);
 
   const handleJobUpdate: SubmitHandler<FieldValues> = async (data) => {
+    setIsSubmitting(true);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/job/update/${jobId}`,
@@ -77,6 +79,8 @@ export default function Page({ params }: JobEditPageProps) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -90,6 +94,7 @@ export default function Page({ params }: JobEditPageProps) {
           jobTitle: data?.title,
           jobId: data?.id,
         }}
+        isSubmitting={isSubmitting}
       />
     </>
   );

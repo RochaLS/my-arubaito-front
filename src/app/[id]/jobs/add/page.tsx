@@ -17,8 +17,10 @@ export default function Page({ params }: JobAddPageProps) {
   const router = useRouter();
 
   const [authErrorMsg, setAuthErrorMsg] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleJobSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setIsSubmitting(true);
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/job/add`,
@@ -44,13 +46,15 @@ export default function Page({ params }: JobAddPageProps) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <>
       <Navbar currentUserId={id} />
-      <JobForm onSubmit={handleJobSubmit} />
+      <JobForm isSubmitting={isSubmitting} onSubmit={handleJobSubmit} />
     </>
   );
 }

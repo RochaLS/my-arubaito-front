@@ -25,9 +25,10 @@ interface FieldData {
 interface JobFormProps {
   onSubmit: SubmitHandler<FieldValues>;
   data?: FieldData;
+  isSubmitting: boolean;
 }
 
-export function JobForm({ data, onSubmit }: JobFormProps) {
+export function JobForm({ data, onSubmit, isSubmitting }: JobFormProps) {
   const isEditForm = !!data;
 
   const {
@@ -103,7 +104,15 @@ export function JobForm({ data, onSubmit }: JobFormProps) {
             </FormControl>
 
             <Center>
-              <Button m={10} size="lg" colorScheme="teal" w="50%" type="submit">
+              <Button
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
+                m={10}
+                size="lg"
+                colorScheme="teal"
+                w="50%"
+                type="submit"
+              >
                 {isEditForm ? "Confirm" : "Add"}
               </Button>
             </Center>
