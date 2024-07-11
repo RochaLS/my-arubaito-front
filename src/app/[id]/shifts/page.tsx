@@ -139,6 +139,18 @@ export default function Page({ params }: PageProps) {
                 </Flex>
                 <Flex justify="flex-end">
                   <Skeleton isLoaded={isLoaded}>
+                    <Link as={NextLink} href={`shifts/edit/${shift.id}`}>
+                      <Button
+                        mr={2}
+                        variant="outline"
+                        colorScheme="teal"
+                        size="sm"
+                      >
+                        Edit
+                      </Button>
+                    </Link>
+                  </Skeleton>
+                  <Skeleton isLoaded={isLoaded}>
                     <Button
                       variant="outline"
                       colorScheme="red"

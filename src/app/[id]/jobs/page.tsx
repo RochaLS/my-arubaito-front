@@ -141,7 +141,7 @@ export default function Page({ params }: PageProps) {
                   <Box>{job.hourlyRate.toFixed(2)}</Box>
                 </Flex>
                 <Flex justify="flex-end">
-                  <Link as={NextLink} href="jobs/edit">
+                  <Link as={NextLink} href={`jobs/edit/${job.id}`}>
                     <Button
                       mr={2}
                       variant="outline"
