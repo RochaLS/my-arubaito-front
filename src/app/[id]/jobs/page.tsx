@@ -56,6 +56,9 @@ export default function Page({ params }: PageProps) {
   const [data, setData] = useState<Job[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmittingJobId, setIsSubmittingJobId] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,25 +79,32 @@ export default function Page({ params }: PageProps) {
   }, [id]);
 
   async function handleOnClick(id: number) {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/job/delete/${id}`,
-      {
-        cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "DELETE",
-        credentials: "include",
+    setIsSubmittingJobId(id);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/job/delete/${id}`,
+        {
+          cache: "no-store",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      // console.log(response);
+
+      if (!response.ok) {
+        throw new Error("Deletion failed, try again later.");
+      } else {
+        const updatedJobs = data.filter((job) => job.id !== id);
+        setData(updatedJobs);
       }
-    );
-
-    // console.log(response);
-
-    if (!response.ok) {
-      throw new Error("Deletion failed, try again later.");
-    } else {
-      const updatedJobs = data.filter((job) => job.id !== id);
-      setData(updatedJobs);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmittingJobId(null);
     }
   }
 
@@ -148,6 +158,8 @@ export default function Page({ params }: PageProps) {
                     onSubmit={() => {
                       handleOnClick(job.id);
                     }}
+                    isLoading={isSubmittingJobId === job.id}
+                    isDisabled={isSubmittingJobId === job.id}
                   >
                     Remove
                   </Button>
@@ -199,6 +211,8 @@ export default function Page({ params }: PageProps) {
                           console.log("clicked");
                           handleOnClick(job.id);
                         }}
+                        isLoading={isSubmittingJobId === job.id}
+                        isDisabled={isSubmittingJobId === job.id}
                       >
                         Remove
                       </Button>
