@@ -75,13 +75,13 @@ export function ShiftForm({
   }, [shiftData, isEditForm, setValue]);
 
   return (
-    <Box p={[0, 50]}>
+    <Box p={[30, 50]}>
       <Flex flexDir="column" w="100%" h="100%" justify="center" align="center">
         <Box
           m={[5, 0]}
           p={[5, 10]}
           bgColor="white"
-          w={["100", "70%", "70%", "50%"]}
+          w={["100%", "70%", "70%", "50%"]}
           borderRadius={10}
           boxShadow="sm"
         >
