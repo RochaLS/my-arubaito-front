@@ -10,9 +10,11 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [authErrorMsg, setAuthErrorMsg] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const handleLoginSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setIsSubmitting(true);
     const authString = btoa(`${data.email}:${data.password}`);
 
     console.log(`${process.env.NEXT_PUBLIC_API_URL}/login`);
@@ -37,6 +39,8 @@ export default function Page() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -60,6 +64,7 @@ export default function Page() {
           onSubmit={handleLoginSubmit}
           formType="login"
           authErrorMsg={authErrorMsg}
+          isSubmitting={isSubmitting}
         />
       </Flex>
     </Box>

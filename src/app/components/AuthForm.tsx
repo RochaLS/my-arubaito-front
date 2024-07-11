@@ -37,6 +37,7 @@ interface AuthFormProps {
   onSubmit: SubmitHandler<FieldValues>;
   formType: string;
   authErrorMsg?: string;
+  isSubmitting?: boolean;
 }
 
 export function AuthForm({
@@ -45,6 +46,7 @@ export function AuthForm({
   onSubmit,
   formType,
   authErrorMsg,
+  isSubmitting,
 }: AuthFormProps) {
   const primaryButtonText = formType === "login" ? "Login" : "Sign up";
   const secondaryButtonText = formType === "login" ? "Sign up" : "Login";
@@ -52,6 +54,10 @@ export function AuthForm({
 
   // Schema comes from util/validationSchemas
   const schema = formType === "login" ? loginSchema : signUpSchema;
+
+  if (isSubmitting === null) {
+    isSubmitting = false;
+  }
 
   const {
     register,
@@ -151,7 +157,15 @@ export function AuthForm({
           </Text>
         )}
         <Center flexDir="column" m={10}>
-          <Button type="submit" m={5} size="lg" colorScheme="teal" w="50%">
+          <Button
+            type="submit"
+            m={5}
+            size="lg"
+            colorScheme="teal"
+            w="50%"
+            isLoading={isSubmitting}
+            isDisabled={isSubmitting}
+          >
             {primaryButtonText}
           </Button>
           <Link href={secondaryButtonHref}>

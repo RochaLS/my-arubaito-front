@@ -10,7 +10,6 @@ to make sure users can't see other's data.
 */
 
 export async function middleware(req: NextRequest) {
-  console.log(req);
   const sessionId = req.cookies.get("JSESSIONID");
   const url = new URL(req.url, process.env.NEXT_PUBLIC_WEB_APP_URL);
   console.log(url.toString());

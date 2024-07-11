@@ -10,8 +10,10 @@ import { useState } from "react";
 
 export default function Page() {
   const [authErrorMsg, setAuthErrorMsg] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const handleSignUpSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setIsSubmitting(true);
     if (!(await userHasAccount(data.email))) {
       try {
         const response = await fetch(
@@ -57,6 +59,8 @@ export default function Page() {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsSubmitting(false);
       }
     } else {
       setAuthErrorMsg("You already have an account please login.");
@@ -110,6 +114,7 @@ export default function Page() {
               label: "Confirm password",
             },
           ]}
+          isSubmitting={isSubmitting}
           onSubmit={handleSignUpSubmit}
           formType="signup"
           authErrorMsg={authErrorMsg}
