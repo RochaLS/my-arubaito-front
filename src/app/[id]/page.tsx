@@ -183,7 +183,11 @@ export default function Page({ params }: PageProps) {
           <Heading m={[5, 10]} textAlign="center">
             Dashboard
           </Heading>
-          <Flex justify="space-between" mx={[5, 5, 5, 10]}>
+          <Flex
+            flexDir={["column", "row"]}
+            justify="space-between"
+            mx={[5, 5, 5, 10]}
+          >
             <HStack>
               <Button
                 colorScheme="teal"
@@ -230,7 +234,9 @@ export default function Page({ params }: PageProps) {
             </HStack>
 
             <Link as={NextLink} href={`${id}/shifts/add`}>
-              <Button colorScheme="teal">Add shift</Button>
+              <Button my={[5, 0]} colorScheme="teal">
+                Add shift
+              </Button>
             </Link>
           </Flex>
 
