@@ -30,7 +30,7 @@ export function OverviewBox({ data, isLoaded }: OverviewBoxProps) {
       borderRadius={10}
     >
       <Heading mb={5} textAlign="center" size="lg">
-        Prediction for upcoming weeks 🤑
+        Income Prediction 🤑
       </Heading>
       <SkeletonText skeletonHeight={4} noOfLines={4} isLoaded={isLoaded}>
         {data.numOfShifts === 0 ? (

@@ -30,7 +30,6 @@ import NextLink from "next/link";
 export default function Page() {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
-  console.log("AM I EVEN HERE?");
   return (
     <>
       <Center pt={5}>
