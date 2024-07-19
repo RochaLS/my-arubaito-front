@@ -188,7 +188,7 @@ export default function Page({ params }: PageProps) {
             justify="space-between"
             mx={[5, 5, 5, 10]}
           >
-            <HStack>
+            {/* <HStack>
               <Button
                 colorScheme="teal"
                 variant="outline"
@@ -231,7 +231,7 @@ export default function Page({ params }: PageProps) {
               >
                 This week
               </Button>
-            </HStack>
+            </HStack> */}
 
             <Link as={NextLink} href={`${id}/shifts/add`}>
               <Button my={[5, 0]} colorScheme="teal">
