@@ -11,6 +11,12 @@ interface ListBoxProps {
 export function ListBox({ shifts, isLoaded }: ListBoxProps) {
   const maxShiftsToDisplay = 5;
 
+  const findNextShift = (shifts: Shift[]) => {
+    const currentDate = new Date();
+
+    return shifts.filter((shift) => new Date(shift.startDate) > currentDate)[0];
+  };
+
   return (
     <Box
       borderRadius={10}

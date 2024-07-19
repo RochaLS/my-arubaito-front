@@ -18,13 +18,8 @@ import { useEffect, useState } from "react";
 import NextLink from "next/link";
 import { ErrorBanner } from "../components/ErrorBanner";
 import { Copyright } from "../components/Copyright";
-import {
-  endOfMonth,
-  endOfWeek,
-  startOfDay,
-  startOfMonth,
-  startOfWeek,
-} from "date-fns";
+import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
+import { Shift } from "../util/fetchShifts";
 
 interface PageProps {
   params: {
@@ -32,68 +27,39 @@ interface PageProps {
   };
 }
 
-async function getData(id: string) {
-  const response = await fetch(
-    `${
-      process.env.NEXT_PUBLIC_API_URL
-    }/api/income/${id}/calculate?date=${new Date().toISOString().slice(0, 10)}`,
-    {
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    }
-  );
-
-  if (!response.ok) {
-    if (response.status === 401) {
-      throw new Error("Unauthorized");
-    } else if (response.status === 404) {
-      throw new Error("Not found");
-    } else {
-      throw new Error("Failed to fetch data");
-    }
-  }
-
-  return response.json();
+interface Data {
+  nextShift: Shift;
+  nextShiftGrossPay: number;
+  nextShiftTotalHours: number;
+  shifts: Shift[];
+  totalGrossPay: number;
+  totalHours: number;
 }
 
-async function getDataWithFilter(
-  id: string,
-  currentDate: Date,
-  filter: string
-) {
-  let startDate = new Date();
-  let endDate = new Date();
+async function getData(id: string, filter: string, currentDate: Date) {
+  let url = `${process.env.NEXT_PUBLIC_API_URL}/api/income/${id}/calculate`;
 
-  if (filter === "week") {
-    startDate = startOfWeek(currentDate);
-    endDate = endOfWeek(currentDate);
-
-    console.log("Start date: " + startDate);
-    console.log("End date: " + endDate);
-  } else if (filter === "month") {
-    startDate = startOfMonth(currentDate);
-    endDate = endOfMonth(currentDate);
-  } else {
-    return;
-  }
-
-  const response = await fetch(
-    `${
+  if (filter !== "all") {
+    const startDate =
+      filter === "week" ? startOfWeek(currentDate) : startOfMonth(currentDate);
+    const endDate =
+      filter === "week" ? endOfWeek(currentDate) : endOfMonth(currentDate);
+    url = `${
       process.env.NEXT_PUBLIC_API_URL
     }/api/income/${id}/calculate-by-range?start-date=${startDate
       .toISOString()
-      .slice(0, 10)}&end-date=${endDate.toISOString().slice(0, 10)}`,
-    {
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    }
-  );
+      .slice(0, 10)}&end-date=${endDate.toISOString().slice(0, 10)}`;
+  } else {
+    url += `?date=${currentDate.toISOString().slice(0, 10)}`;
+  }
+
+  const response = await fetch(url, {
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
 
   if (!response.ok) {
     if (response.status === 401) {
@@ -107,23 +73,73 @@ async function getDataWithFilter(
 
   return response.json();
 }
+
+// async function getShiftsBasedOnFilter(
+//   id: string,
+//   currentDate: Date,
+//   filter: string
+// ) {
+//   let startDate = new Date();
+//   let endDate = new Date();
+
+//   if (filter === "week") {
+//     startDate = startOfWeek(currentDate);
+//     endDate = endOfWeek(currentDate);
+
+//     console.log("Start date: " + startDate);
+//     console.log("End date: " + endDate);
+//   } else if (filter === "month") {
+//     startDate = startOfMonth(currentDate);
+//     endDate = endOfMonth(currentDate);
+//   } else {
+//     return;
+//   }
+
+//   const response = await fetch(
+//     `${
+//       process.env.NEXT_PUBLIC_API_URL
+//     }/api/income/${id}/calculate-by-range?start-date=${startDate
+//       .toISOString()
+//       .slice(0, 10)}&end-date=${endDate.toISOString().slice(0, 10)}`,
+//     {
+//       cache: "no-store",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       credentials: "include",
+//     }
+//   );
+
+//   if (!response.ok) {
+//     if (response.status === 401) {
+//       throw new Error("Unauthorized");
+//     } else if (response.status === 404) {
+//       throw new Error("Not found");
+//     } else {
+//       throw new Error("Failed to fetch data");
+//     }
+//   }
+
+//   return response.json();
+// }
 
 export default function Page({ params }: PageProps) {
   const { id } = params;
   const [data, setData] = useState<any>(null);
+  const [currentWeekData, setCurrentWeekData] = useState<any>(null);
+  const [currentMonthData, setCurrentMonthData] = useState<any>(null);
+  const [dataToDisplay, setDataToDisplay] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
-  const [weekBtnIsActive, setWeekBtnIsActive] = useState(false);
-  const [monthBtnIsActive, setMonthBtnIsActive] = useState(false);
-  const [allBtnIsActive, setAllBtnIsActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedData = await getData(id);
+        const fetchedData = await getData(id, "all", new Date());
         setData(fetchedData);
+        setDataToDisplay(fetchedData);
         setIsLoaded(true);
       } catch (error: any) {
         if (error.message === "Unauthorized") {
@@ -142,27 +158,44 @@ export default function Page({ params }: PageProps) {
 
   const handleFilterClick = async (id: string, filter: string) => {
     setIsLoaded(false);
-    try {
-      let fetchedData = null;
+    if (currentMonthData === null || currentWeekData === null) {
+      console.log("here");
+      try {
+        let fetchedData = null;
+        fetchedData = await getData(id, filter, new Date());
+        if (filter === "all") {
+          setData(fetchedData);
+          setDataToDisplay(fetchedData);
+        } else if (filter === "week") {
+          setCurrentWeekData(fetchedData);
+          setDataToDisplay(fetchedData);
+        } else if (filter === "month") {
+          setCurrentMonthData(fetchedData);
+          setDataToDisplay(fetchedData);
+        }
+        setIsLoaded(true);
+        setActiveFilter(filter);
+      } catch (error: any) {
+        if (error.message === "Unauthorized") {
+          router.push("/login");
+        } else if (error.message === "Not found") {
+          setError("404");
+        } else {
+          setError("Error fetching shifts, try again later.");
+        }
+
+        setIsLoaded(true);
+      }
+    } else {
       if (filter === "all") {
-        fetchedData = await getData(id);
-      } else {
-        fetchedData = await getDataWithFilter(id, new Date(), filter);
+        setDataToDisplay(data);
+      } else if (filter === "week") {
+        setDataToDisplay(currentWeekData);
+      } else if (filter === "month") {
+        setDataToDisplay(currentMonthData);
       }
-
       setIsLoaded(true);
-      setData(fetchedData);
       setActiveFilter(filter);
-    } catch (error: any) {
-      if (error.message === "Unauthorized") {
-        router.push("/login");
-      } else if (error.message === "Not found") {
-        setError("404");
-      } else {
-        setError("Error fetching shifts, try again later.");
-      }
-
-      setIsLoaded(true);
     }
   };
 
@@ -174,6 +207,16 @@ export default function Page({ params }: PageProps) {
     style: "currency",
     currency: "CAD",
   });
+
+  const filteredData = () => {
+    if (activeFilter === "week" && currentWeekData !== null) {
+      return currentWeekData;
+    } else if (activeFilter === "month" && currentMonthData !== null) {
+      return currentMonthData;
+    } else {
+      return data;
+    }
+  };
 
   return (
     <>
@@ -188,7 +231,7 @@ export default function Page({ params }: PageProps) {
             justify="space-between"
             mx={[5, 5, 5, 10]}
           >
-            {/* <HStack>
+            <HStack>
               <Button
                 colorScheme="teal"
                 variant="outline"
@@ -231,7 +274,7 @@ export default function Page({ params }: PageProps) {
               >
                 This week
               </Button>
-            </HStack> */}
+            </HStack>
 
             <Link as={NextLink} href={`${id}/shifts/add`}>
               <Button my={[5, 0]} colorScheme="teal">
@@ -244,22 +287,28 @@ export default function Page({ params }: PageProps) {
             <Box w={["100%", "90%", "90%", "70%"]} minH={300}>
               <OverviewBox
                 data={{
-                  totalHours: data?.totalHours || 0,
-                  totalGrossPay: formatter.format(data?.totalGrossPay || 0),
-                  numOfShifts: data?.shifts ? data.shifts.length : 0,
+                  totalHours: dataToDisplay?.totalHours || 0,
+                  totalGrossPay: formatter.format(
+                    dataToDisplay?.totalGrossPay || 0
+                  ),
+                  numOfShifts: dataToDisplay?.shifts
+                    ? dataToDisplay.shifts.length
+                    : 0,
                 }}
                 isLoaded={isLoaded}
               />
               <ShiftBox
                 nextShift={{
-                  shift: data?.nextShift,
-                  totalHours: data?.nextShiftTotalHours || 0,
-                  moneyValue: formatter.format(data?.nextShiftGrossPay || 0),
+                  shift: dataToDisplay?.nextShift,
+                  totalHours: dataToDisplay?.nextShiftTotalHours || 0,
+                  moneyValue: formatter.format(
+                    dataToDisplay?.nextShiftGrossPay || 0
+                  ),
                 }}
                 isLoaded={isLoaded}
               />
             </Box>
-            <ListBox shifts={data?.shifts || []} isLoaded={isLoaded} />
+            <ListBox shifts={dataToDisplay?.shifts || []} isLoaded={isLoaded} />
           </Flex>
           <Box
             boxShadow="md"
@@ -267,7 +316,7 @@ export default function Page({ params }: PageProps) {
             h={[0, 400, 500, 800]}
             display={["none", "block"]}
           >
-            <MyCalendar shifts={data?.shifts || []} />
+            <MyCalendar shifts={dataToDisplay?.shifts || []} />
           </Box>
         </Box>
       </Center>
