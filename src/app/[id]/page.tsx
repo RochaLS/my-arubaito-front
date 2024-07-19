@@ -101,6 +101,13 @@ export default function Page({ params }: PageProps) {
 
   const handleFilterClick = async (id: string, filter: string) => {
     setIsLoaded(false);
+
+    /*
+    How this section works: If it's the first time the user clicks the button, we make a api call
+    with the filter options and then fetch the filtered and save on it respective states, currentMonthData,
+    currentWeekData. If it's the second time the user is clicking the button we just get the data from state :)
+    */
+
     if (currentMonthData === null || currentWeekData === null) {
       console.log("here");
       try {
