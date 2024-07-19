@@ -74,55 +74,6 @@ async function getData(id: string, filter: string, currentDate: Date) {
   return response.json();
 }
 
-// async function getShiftsBasedOnFilter(
-//   id: string,
-//   currentDate: Date,
-//   filter: string
-// ) {
-//   let startDate = new Date();
-//   let endDate = new Date();
-
-//   if (filter === "week") {
-//     startDate = startOfWeek(currentDate);
-//     endDate = endOfWeek(currentDate);
-
-//     console.log("Start date: " + startDate);
-//     console.log("End date: " + endDate);
-//   } else if (filter === "month") {
-//     startDate = startOfMonth(currentDate);
-//     endDate = endOfMonth(currentDate);
-//   } else {
-//     return;
-//   }
-
-//   const response = await fetch(
-//     `${
-//       process.env.NEXT_PUBLIC_API_URL
-//     }/api/income/${id}/calculate-by-range?start-date=${startDate
-//       .toISOString()
-//       .slice(0, 10)}&end-date=${endDate.toISOString().slice(0, 10)}`,
-//     {
-//       cache: "no-store",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       credentials: "include",
-//     }
-//   );
-
-//   if (!response.ok) {
-//     if (response.status === 401) {
-//       throw new Error("Unauthorized");
-//     } else if (response.status === 404) {
-//       throw new Error("Not found");
-//     } else {
-//       throw new Error("Failed to fetch data");
-//     }
-//   }
-
-//   return response.json();
-// }
-
 export default function Page({ params }: PageProps) {
   const { id } = params;
   const [data, setData] = useState<any>(null);
@@ -142,15 +93,7 @@ export default function Page({ params }: PageProps) {
         setDataToDisplay(fetchedData);
         setIsLoaded(true);
       } catch (error: any) {
-        if (error.message === "Unauthorized") {
-          router.push("/login");
-        } else if (error.message === "Not found") {
-          setError("404");
-        } else {
-          setError("Error fetching shifts, try again later.");
-        }
-
-        setIsLoaded(true);
+        handleFetchError(error);
       }
     };
     fetchData();
@@ -176,15 +119,7 @@ export default function Page({ params }: PageProps) {
         setIsLoaded(true);
         setActiveFilter(filter);
       } catch (error: any) {
-        if (error.message === "Unauthorized") {
-          router.push("/login");
-        } else if (error.message === "Not found") {
-          setError("404");
-        } else {
-          setError("Error fetching shifts, try again later.");
-        }
-
-        setIsLoaded(true);
+        handleFetchError(error);
       }
     } else {
       if (filter === "all") {
@@ -208,14 +143,15 @@ export default function Page({ params }: PageProps) {
     currency: "CAD",
   });
 
-  const filteredData = () => {
-    if (activeFilter === "week" && currentWeekData !== null) {
-      return currentWeekData;
-    } else if (activeFilter === "month" && currentMonthData !== null) {
-      return currentMonthData;
+  const handleFetchError = (error: any) => {
+    if (error.message === "Unauthorized") {
+      router.push("/login");
+    } else if (error.message === "Not found") {
+      setError("404");
     } else {
-      return data;
+      setError("Error fetching shifts, try again later.");
     }
+    setIsLoaded(true);
   };
 
   return (
