@@ -1,14 +1,25 @@
-import { Box, Flex, Text, Icon, Heading, Skeleton } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Icon,
+  Heading,
+  Skeleton,
+  Link,
+  Button,
+} from "@chakra-ui/react";
 import { LuSunrise } from "react-icons/lu";
 import { ListShiftCard } from "./ListShiftCard";
 import { Shift } from "../util/fetchShifts";
+import NextLink from "next/link";
 
 interface ListBoxProps {
   shifts: Shift[];
   isLoaded: boolean;
+  currentUserId: string;
 }
 
-export function ListBox({ shifts, isLoaded }: ListBoxProps) {
+export function ListBox({ shifts, isLoaded, currentUserId }: ListBoxProps) {
   const maxShiftsToDisplay = 5;
 
   const findNextShift = (shifts: Shift[]) => {
@@ -25,8 +36,16 @@ export function ListBox({ shifts, isLoaded }: ListBoxProps) {
       w={["90%", "70", "60%", "50%"]}
       minH="30%"
       m={[5, 5, 5, 10]}
+      mt={0}
       p={5}
     >
+      <Flex mb={5} justify="right">
+        <Link as={NextLink} href={`${currentUserId}/shifts/add`}>
+          <Button my={[5, 0]} colorScheme="teal">
+            Add shift
+          </Button>
+        </Link>
+      </Flex>
       <Heading textAlign="center" size="lg" mb={10}>
         Upcoming shifts 📆
       </Heading>

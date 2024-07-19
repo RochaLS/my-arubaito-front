@@ -219,11 +219,11 @@ export default function Page({ params }: PageProps) {
               </Button>
             </HStack>
 
-            <Link as={NextLink} href={`${id}/shifts/add`}>
+            {/* <Link as={NextLink} href={`${id}/shifts/add`}>
               <Button my={[5, 0]} colorScheme="teal">
                 Add shift
               </Button>
-            </Link>
+            </Link> */}
           </Flex>
 
           <Flex flexDir={["column", "row"]}>
@@ -251,7 +251,11 @@ export default function Page({ params }: PageProps) {
                 isLoaded={isLoaded}
               />
             </Box>
-            <ListBox shifts={dataToDisplay?.shifts || []} isLoaded={isLoaded} />
+            <ListBox
+              currentUserId={id}
+              shifts={dataToDisplay?.shifts || []}
+              isLoaded={isLoaded}
+            />
           </Flex>
           <Box
             boxShadow="md"
