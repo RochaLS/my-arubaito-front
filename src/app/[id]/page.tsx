@@ -27,15 +27,6 @@ interface PageProps {
   };
 }
 
-interface Data {
-  nextShift: Shift;
-  nextShiftGrossPay: number;
-  nextShiftTotalHours: number;
-  shifts: Shift[];
-  totalGrossPay: number;
-  totalHours: number;
-}
-
 async function getData(id: string, filter: string, currentDate: Date) {
   let url = `${process.env.NEXT_PUBLIC_API_URL}/api/income/${id}/calculate`;
 
@@ -169,11 +160,7 @@ export default function Page({ params }: PageProps) {
           <Heading m={[5, 10]} textAlign="center">
             Dashboard
           </Heading>
-          <Flex
-            flexDir={["column", "row"]}
-            justify="space-between"
-            mx={[5, 5, 5, 10]}
-          >
+          <Flex flexDir="row" justify="left" mx={[5, 5, 5, 10]}>
             <HStack>
               <Button
                 colorScheme="teal"
@@ -242,18 +229,16 @@ export default function Page({ params }: PageProps) {
               />
               <ShiftBox
                 nextShift={{
-                  shift: dataToDisplay?.nextShift,
-                  totalHours: dataToDisplay?.nextShiftTotalHours || 0,
-                  moneyValue: formatter.format(
-                    dataToDisplay?.nextShiftGrossPay || 0
-                  ),
+                  shift: data?.nextShift,
+                  totalHours: data?.nextShiftTotalHours || 0,
+                  moneyValue: formatter.format(data?.nextShiftGrossPay || 0),
                 }}
                 isLoaded={isLoaded}
               />
             </Box>
             <ListBox
               currentUserId={id}
-              shifts={dataToDisplay?.shifts || []}
+              shifts={data?.shifts || []}
               isLoaded={isLoaded}
             />
           </Flex>
