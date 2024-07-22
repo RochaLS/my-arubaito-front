@@ -1,12 +1,13 @@
 "use client";
 
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex, Box, Link } from "@chakra-ui/react";
 import { AuthForm } from "../components/AuthForm";
 import { Logo } from "../components/Logo";
 
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import NextLink from "next/link";
 
 export default function Page() {
   const [authErrorMsg, setAuthErrorMsg] = useState("");
@@ -95,7 +96,9 @@ export default function Page() {
   return (
     <Box p={[0, 50]}>
       <Flex flexDir="column" w="100%" h="100%" justify="center" align="center">
-        <Logo />
+        <Link href="/" as={NextLink} style={{ textDecoration: "none" }}>
+          <Logo />
+        </Link>
         <AuthForm
           title="Sign up."
           fields={[
