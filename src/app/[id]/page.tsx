@@ -174,7 +174,7 @@ export default function Page({ params }: PageProps) {
                   color: "white",
                 }}
               >
-                All upcoming
+                Upcoming
               </Button>
               <Button
                 colorScheme="teal"
