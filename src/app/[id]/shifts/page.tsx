@@ -19,19 +19,33 @@ import {
   Text,
   Skeleton,
   SkeletonText,
+  HStack,
+  IconButton,
 } from "@chakra-ui/react";
 import { Navbar } from "../../components/Navbar";
 import NextLink from "next/link";
-import { Shift, getData } from "@/app/util/fetchShifts";
+import { Shift, getData, getPaginatedData } from "@/app/util/fetchShifts";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/app/util/dateFormatting";
 import { convertTime } from "@/app/util/date";
-import { IoIosWarning } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { ErrorBanner } from "@/app/components/ErrorBanner";
 import { Copyright } from "@/app/components/Copyright";
 
 interface PageProps {
   params: {
+    id: string;
+  };
+}
+
+export interface JobShift {
+  id: number;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  shiftType: string;
+  job: {
     id: string;
   };
 }
@@ -47,11 +61,18 @@ export default function Page({ params }: PageProps) {
     null
   );
 
+  // Pagination info:
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedData = await getData(id);
-        setData(fetchedData);
+        const fetchedData = await getPaginatedData(id, 0, 5);
+        setData(fetchedData.shifts);
+        setCurrentPage(fetchedData.pageNumber);
+        setTotalPages(fetchedData.totalPages);
+        console.log("In page:" + data);
         setIsLoaded(true);
       } catch (error: any) {
         if (error.message === "Not found") {
@@ -63,6 +84,7 @@ export default function Page({ params }: PageProps) {
       }
     };
     fetchData();
+    console.log(data);
   }, [id]);
 
   if (error && error !== "404") {
@@ -87,15 +109,40 @@ export default function Page({ params }: PageProps) {
       if (!response.ok) {
         throw new Error("Deletion failed, try again later.");
       } else {
-        const updatedShifts = data.shifts.filter(
-          (shift: Shift) => shift.id !== id
-        );
-        setData({ ...data, shifts: updatedShifts });
+        const updatedShifts = data.filter((shift: Shift) => shift.id !== id);
+        setData(updatedShifts);
       }
     } catch (error) {
       console.log(error);
     } finally {
       setIsSubmittingShiftId(null);
+    }
+  }
+
+  async function handleChangePageClick(action: string) {
+    let pageToFetch = 0;
+
+    if (action === "forward") {
+      pageToFetch = currentPage + 1;
+    } else if (action === "back") {
+      pageToFetch = currentPage - 1;
+    } else {
+      return;
+    }
+
+    try {
+      const fetchedData = await getPaginatedData(id, pageToFetch, 5);
+      setData(fetchedData.shifts);
+      setCurrentPage(fetchedData.pageNumber);
+      setTotalPages(fetchedData.totalPages);
+      setIsLoaded(true);
+    } catch (error: any) {
+      if (error.message === "Not found") {
+        setError("404");
+      } else {
+        setError("Error fetching shifts, try again later.");
+      }
+      setIsLoaded(true);
     }
   }
 
@@ -115,7 +162,7 @@ export default function Page({ params }: PageProps) {
             w="full"
             borderRadius={10}
           >
-            {data?.shifts.map((shift: Shift, index: number) => (
+            {data?.map((shift: JobShift, index: number) => (
               <Flex
                 key={index}
                 direction="column"
@@ -134,7 +181,7 @@ export default function Page({ params }: PageProps) {
                     </Skeleton>
                   </Box>
                   <Skeleton isLoaded={isLoaded}>
-                    <Text>Job ID: {shift.job_id}</Text>
+                    <Text>Job ID: {shift.job.id}</Text>
                   </Skeleton>
                 </Flex>
                 <Flex justify="flex-end">
@@ -167,12 +214,37 @@ export default function Page({ params }: PageProps) {
                 </Flex>
               </Flex>
             ))}
-            <Center mt={4}>
+            <Flex justifyContent="space-between" m={5}>
               <Link as={NextLink} href="shifts/add">
-                <Button mb={5} colorScheme="teal">
-                  Add new shift
-                </Button>
+                <Button colorScheme="teal">Add new shift</Button>
               </Link>
+              <HStack spacing={2}>
+                <IconButton
+                  colorScheme="teal"
+                  variant="outline"
+                  aria-label="Previous page"
+                  icon={<IoIosArrowBack />}
+                  isDisabled={currentPage === 0}
+                  onClick={() => {
+                    handleChangePageClick("back");
+                  }}
+                />
+                <IconButton
+                  colorScheme="teal"
+                  variant="outline"
+                  aria-label="Next page"
+                  icon={<IoIosArrowForward />}
+                  isDisabled={totalPages - 1 === currentPage}
+                  onClick={() => {
+                    handleChangePageClick("forward");
+                  }}
+                />
+              </HStack>
+            </Flex>
+            <Center>
+              <Text color="gray.500" mb={5} fontSize="xs">
+                Page {currentPage + 1} of {totalPages}
+              </Text>
             </Center>
           </Box>
         ) : (
@@ -194,10 +266,10 @@ export default function Page({ params }: PageProps) {
                 </Tr>
               </Thead>
               <Tbody>
-                {data?.shifts.map((shift: Shift, index: number) => (
+                {data?.map((shift: JobShift, index: number) => (
                   <Tr key={index}>
                     <Td>
-                      <Skeleton isLoaded={isLoaded}>{shift.job_id}</Skeleton>
+                      <Skeleton isLoaded={isLoaded}>{shift.job.id}</Skeleton>
                     </Td>
                     <Td>
                       <Skeleton isLoaded={isLoaded}>
@@ -241,6 +313,36 @@ export default function Page({ params }: PageProps) {
                     <Link as={NextLink} href="shifts/add">
                       <Button colorScheme="teal">Add new shift</Button>
                     </Link>
+                  </Th>
+                  <Th></Th>
+                  <Th></Th>
+                  <Th></Th>
+                  <Th>
+                    <HStack spacing={2}>
+                      <IconButton
+                        colorScheme="teal"
+                        variant="outline"
+                        aria-label="Previous page"
+                        icon={<IoIosArrowBack />}
+                        isDisabled={currentPage === 0}
+                        onClick={() => {
+                          handleChangePageClick("back");
+                        }}
+                      />
+                      <IconButton
+                        colorScheme="teal"
+                        variant="outline"
+                        aria-label="Next page"
+                        icon={<IoIosArrowForward />}
+                        isDisabled={totalPages - 1 === currentPage}
+                        onClick={() => {
+                          handleChangePageClick("forward");
+                        }}
+                      />
+                    </HStack>
+                    <Text mt={2} fontSize="xs">
+                      Page {currentPage + 1} of {totalPages}
+                    </Text>
                   </Th>
                 </Tr>
               </Tfoot>
