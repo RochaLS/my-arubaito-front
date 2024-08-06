@@ -9,6 +9,7 @@ import {
   Center,
   Button,
   Box,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { Job } from "../util/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -94,6 +95,17 @@ export function ShiftForm({
               onSubmit(data);
             })}
           >
+            {/* {!isEditForm && (
+              <FormControl>
+                <Flex flexDir="column" alignItems="center">
+                  <Button colorScheme="teal">Upload Work Schedule</Button>
+                  <FormHelperText>
+                    Automatically import your shifts just with a screenshot from
+                    your work schedule.
+                  </FormHelperText>
+                </Flex>
+              </FormControl>
+            )} */}
             <FormControl isInvalid={!!errors.date}>
               <FormLabel mt={5}>Date</FormLabel>
               <Input
