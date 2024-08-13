@@ -35,6 +35,31 @@ export async function getData(id: string) {
   return response.json();
 }
 
+export async function getAllShiftsByJobId(jobId: String) {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/shift/byJob/${jobId}`,
+    {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error("Unauthorized");
+    } else if (response.status === 404) {
+      return [];
+    } else {
+      throw new Error("Failed to fetch data");
+    }
+  }
+
+  return response.json();
+}
+
 export async function getPaginatedData(id: string, page: number, size: number) {
   const response = await fetch(
     `${
