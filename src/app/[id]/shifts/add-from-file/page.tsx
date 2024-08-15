@@ -33,9 +33,13 @@ export default function Page({ params }: ShiftAddFromFilePageProps) {
   const [fileName, setFileName] = useState<String>("none");
   const [data, setData] = useState<Shift[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [jobId, setJobId] = useState("0");
+  // const [jobId, setJobId] = useState("0");
   const [jobData, setJobData] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessageJobId, setErrorMessageJobId] = useState<string | null>(
+    null
+  );
 
   const router = useRouter();
 
@@ -57,6 +61,13 @@ export default function Page({ params }: ShiftAddFromFilePageProps) {
     setIsSubmitting(true);
     if (!file) {
       setIsSubmitting(false);
+      setErrorMessage("Please upload a file.");
+      return;
+    }
+
+    if (selectedJob === "" || selectedJob == "Select job") {
+      setIsSubmitting(false);
+      setErrorMessageJobId("Please select a job.");
       return;
     }
 
@@ -149,25 +160,31 @@ export default function Page({ params }: ShiftAddFromFilePageProps) {
           const uniqueShifts: Shift[] = await response.json();
           console.log("UNIQUE: " + JSON.stringify(uniqueShifts));
 
-          sessionStorage.setItem(
-            "importedShifts",
-            JSON.stringify(uniqueShifts)
-          );
+          if (uniqueShifts.length !== 0) {
+            sessionStorage.setItem(
+              "importedShifts",
+              JSON.stringify(uniqueShifts)
+            );
 
-          setIsSubmitting(false);
-          router.push("add-from-file/review?job=" + jobId);
+            setIsSubmitting(false);
+            router.push("add-from-file/review?job=" + selectedJob);
+          } else {
+            setErrorMessage(
+              "No shifts detected in image. Please upload a valid image."
+            );
+            setIsSubmitting(false);
+          }
 
           if (!response.ok) {
-            console.log("error");
-            return;
+            throw new Error("Error checking for duplicates!");
           }
         } catch (error) {
-          console.log("test");
+          setErrorMessage("Something went wrong. Try again later.");
           return;
         }
       });
     } catch (error) {
-      console.error(error);
+      setErrorMessage("Error checking processing image, try again later.");
       setIsSubmitting(false);
     }
   }
@@ -207,7 +224,7 @@ export default function Page({ params }: ShiftAddFromFilePageProps) {
               automatically extract and import your shifts into the app. ⚡️
             </Text>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-              <FormControl>
+              <FormControl isInvalid={!!errorMessageJobId}>
                 <FormLabel mt={5}>
                   Select the job to import the work schedule:
                 </FormLabel>
@@ -232,11 +249,11 @@ export default function Page({ params }: ShiftAddFromFilePageProps) {
                     </option>
                   ))}
                 </Select>
-                {/* <FormErrorMessage>
-                {errors.job && errors.job.message?.toString()}
-              </FormErrorMessage> */}
+                {errorMessageJobId && (
+                  <FormErrorMessage>{errorMessageJobId}</FormErrorMessage>
+                )}
               </FormControl>
-              <FormControl>
+              <FormControl isInvalid={!!errorMessage}>
                 <Input
                   mt={5}
                   type="file"
@@ -261,7 +278,11 @@ export default function Page({ params }: ShiftAddFromFilePageProps) {
                     <Text color="gray">Selected File: {fileName}</Text>
                   </Flex>
                 </label>
+                {errorMessage && (
+                  <FormErrorMessage>{errorMessage}</FormErrorMessage>
+                )}
               </FormControl>
+
               <FormControl>
                 <Center>
                   <Button
@@ -276,6 +297,7 @@ export default function Page({ params }: ShiftAddFromFilePageProps) {
                     Confirm
                   </Button>
                 </Center>
+
                 <FormHelperText>
                   By uploading your screenshot, you agree that the file will be
                   sent to Gemini AI for processing.
