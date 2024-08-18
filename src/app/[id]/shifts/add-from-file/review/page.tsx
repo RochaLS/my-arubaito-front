@@ -21,17 +21,25 @@ import {
   Td,
   Tfoot,
   useBreakpointValue,
+  Input,
+  FormLabel,
 } from "@chakra-ui/react";
+import { CheckIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { JobShift } from "../../page";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { convertTime } from "@/app/util/date";
+import { Controller, useForm } from "react-hook-form";
+import { Path } from "react-hook-form";
 
 interface ShiftReviewPageProps {
   params: {
     id: string;
   };
 }
+
+type FieldPath = Path<{ shifts: JobShift[] }>;
+type JobShiftField = keyof JobShift; // Specifying the the type of fields.
 
 export default function Page({ params }: ShiftReviewPageProps) {
   const { id } = params;
@@ -41,6 +49,14 @@ export default function Page({ params }: ShiftReviewPageProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [paginatedShifts, setPaginatedShifts] = useState<JobShift[]>([]);
   const itemsPerPage = 10;
+
+  const [editRowIndex, setEditRowIndex] = useState<number | null>(null);
+
+  const { control, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      shifts: paginatedShifts,
+    },
+  });
 
   useEffect(() => {
     const importedShifts = JSON.parse(
@@ -53,10 +69,14 @@ export default function Page({ params }: ShiftReviewPageProps) {
   }, []);
 
   useEffect(() => {
-    setPaginatedShifts(
-      shifts.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
-    );
-  }, [shifts, currentPage]);
+    const start = currentPage * itemsPerPage;
+    const end = Math.min((currentPage + 1) * itemsPerPage, shifts.length);
+    /* If we don’t update the form data with the sliced shifts,
+    the form will retain the previous page’s data, which can lead to inconsistencies, like duplicated shifts.
+    */
+    setValue("shifts", shifts.slice(start, end)); // Ensuring the form shifts (useForm) sync with paginated shifts
+    setPaginatedShifts(shifts.slice(start, end)); // Remember to avoid setPaginatedShifts elsewhere. Always update shifts, and then react will take care of it.
+  }, [shifts, currentPage, itemsPerPage, setValue]);
 
   const handleNextPage = () => {
     if ((currentPage + 1) * itemsPerPage < shifts.length) {
@@ -68,6 +88,29 @@ export default function Page({ params }: ShiftReviewPageProps) {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
     }
+  };
+
+  const handleEditClick = (index: number) => {
+    setEditRowIndex(index);
+  };
+
+  const handleEditShift = (
+    index: number,
+    field: JobShiftField,
+    value: string
+  ) => {
+    const globalIndex = currentPage * itemsPerPage + index; // Calculate the global index
+    const updatedShifts = [...shifts]; // We need to this to update the full shift list, paginated one only shows current page ones
+    updatedShifts[globalIndex] = {
+      ...updatedShifts[globalIndex],
+      [field]: value,
+    };
+
+    setShifts(updatedShifts);
+  };
+
+  const handleSave = () => {
+    console.log(paginatedShifts);
   };
 
   return (
@@ -85,14 +128,7 @@ export default function Page({ params }: ShiftReviewPageProps) {
       </Text>
       <Center>
         {isMobile ? (
-          <Box
-            m={5}
-            mt={10}
-            bgColor="white"
-            boxShadow="sm"
-            w="full"
-            borderRadius={10}
-          >
+          <Box m={5} mt={10} bgColor="gray.100" boxShadow="sm" w="full">
             {paginatedShifts.map((shift: JobShift, index: number) => (
               <Flex
                 key={index}
@@ -100,19 +136,87 @@ export default function Page({ params }: ShiftReviewPageProps) {
                 p={4}
                 borderBottom="1px solid"
                 borderColor="gray.200"
+                bgColor="white"
+                mb={5}
+                borderRadius={10}
               >
-                <Flex justify="space-between" mb={2}>
-                  <Box>
-                    <Text fontSize="lg">{formatDate(shift.startDate)}</Text>
+                <Flex mb={2} justify="center">
+                  <Box w="100%">
+                    {/* <Text fontSize="lg">{formatDate(shift.startDate)}</Text> */}
+                    <FormLabel>Date</FormLabel>
+                    <Controller
+                      name={`shifts[${index}].startDate` as FieldPath}
+                      control={control}
+                      defaultValue={shift.startDate}
+                      render={({ field }) => (
+                        <Input
+                          type="date"
+                          isReadOnly={index !== editRowIndex}
+                          {...field}
+                          value={
+                            typeof field.value === "string" ? field.value : ""
+                          } // Ensure the value is a string
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleEditShift(index, "startDate", e.target.value);
+                          }}
+                        />
+                      )}
+                    />
                     <Text fontSize="lg">
-                      {convertTime(shift.startTime)} -{" "}
-                      {convertTime(shift.endTime)}
+                      {/* {convertTime(shift.startTime)} -{" "} */}
+                      <FormLabel>Start Time</FormLabel>
+                      <Controller
+                        name={`shifts[${index}].startTime` as FieldPath}
+                        control={control}
+                        defaultValue={shift.startTime}
+                        render={({ field }) => (
+                          <Input
+                            type="time"
+                            isReadOnly={index !== editRowIndex}
+                            {...field}
+                            value={
+                              typeof field.value === "string" ? field.value : ""
+                            } // Ensure the value is a string
+                            onChange={(e) => {
+                              field.onChange(e);
+                              handleEditShift(
+                                index,
+                                "startTime",
+                                e.target.value
+                              );
+                            }}
+                          />
+                        )}
+                      />
+
+                      {/* {convertTime(shift.endTime)} */}
+                      <FormLabel>End Time</FormLabel>
+                      <Controller
+                        name={`shifts[${index}].endTime` as FieldPath}
+                        control={control}
+                        defaultValue={shift.endTime}
+                        render={({ field }) => (
+                          <Input
+                            type="time"
+                            isReadOnly={index !== editRowIndex}
+                            {...field}
+                            value={
+                              typeof field.value === "string" ? field.value : ""
+                            } // Ensure the value is a string
+                            onChange={(e) => {
+                              field.onChange(e);
+                              handleEditShift(index, "endTime", e.target.value);
+                            }}
+                          />
+                        )}
+                      />
                     </Text>
                   </Box>
 
-                  <Text>Job ID: {jobId}</Text>
+                  {/* <Text>Job ID: {jobId}</Text> */}
                 </Flex>
-                <Flex justify="flex-end">
+                <Flex mt={2} justify="flex-end">
                   <Button mr={2} variant="outline" colorScheme="teal" size="sm">
                     Edit
                   </Button>
@@ -123,7 +227,14 @@ export default function Page({ params }: ShiftReviewPageProps) {
               </Flex>
             ))}
             <Flex m={5} justify="space-between">
-              <Button colorScheme="teal">Confirm</Button>
+              <Button
+                colorScheme="teal"
+                onClick={() => {
+                  handleSave();
+                }}
+              >
+                Confirm
+              </Button>
               <Box>
                 <HStack spacing={2}>
                   <IconButton
@@ -172,23 +283,107 @@ export default function Page({ params }: ShiftReviewPageProps) {
               <Thead>
                 <Tr>
                   <Th>Date</Th>
-                  <Th>Time</Th>
+                  <Th>Start Time</Th>
+                  <Th>End time</Th>
                   <Th>Edit</Th>
                   <Th>Delete</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {paginatedShifts.map((shift: JobShift, index: number) => (
-                  <Tr key={index}>
-                    <Td>{formatDate(shift.startDate)}</Td>
+                  <Tr key={`${shift.startDate}-${shift.startTime}-${index}`}>
                     <Td>
-                      {convertTime(shift.startTime)} -{" "}
-                      {convertTime(shift.endTime)}
+                      {" "}
+                      <Controller
+                        name={`shifts[${index}].startDate` as FieldPath}
+                        control={control}
+                        defaultValue={shift.startDate}
+                        render={({ field }) => (
+                          <Input
+                            type="date"
+                            isReadOnly={index !== editRowIndex}
+                            {...field}
+                            value={
+                              typeof field.value === "string" ? field.value : ""
+                            } // Ensure the value is a string
+                            onChange={(e) => {
+                              field.onChange(e);
+                              handleEditShift(
+                                index,
+                                "startDate",
+                                e.target.value
+                              );
+                            }}
+                          />
+                        )}
+                      />
                     </Td>
                     <Td>
-                      <Button variant="outline" colorScheme="teal">
+                      {" "}
+                      <Controller
+                        name={`shifts[${index}].startTime` as FieldPath}
+                        control={control}
+                        defaultValue={shift.startTime}
+                        render={({ field }) => (
+                          <Input
+                            type="time"
+                            isReadOnly={index !== editRowIndex}
+                            {...field}
+                            value={
+                              typeof field.value === "string" ? field.value : ""
+                            } // Ensure the value is a string
+                            onChange={(e) => {
+                              field.onChange(e);
+                              handleEditShift(
+                                index,
+                                "startTime",
+                                e.target.value
+                              );
+                            }}
+                          />
+                        )}
+                      />
+                    </Td>
+                    <Td>
+                      <Controller
+                        name={`shifts[${index}].endTime` as FieldPath}
+                        control={control}
+                        defaultValue={shift.endTime}
+                        render={({ field }) => (
+                          <Input
+                            type="time"
+                            isReadOnly={index !== editRowIndex}
+                            {...field}
+                            value={
+                              typeof field.value === "string" ? field.value : ""
+                            } // Ensure the value is a string
+                            onChange={(e) => {
+                              field.onChange(e);
+                              handleEditShift(index, "endTime", e.target.value);
+                            }}
+                          />
+                        )}
+                      />
+                    </Td>
+                    <Td>
+                      <Button
+                        variant="outline"
+                        colorScheme="teal"
+                        onClick={() => handleEditClick(index)}
+                      >
                         Edit
                       </Button>
+                      {editRowIndex === index && (
+                        <IconButton
+                          ml={2}
+                          colorScheme="teal"
+                          aria-label="Confirm changes"
+                          icon={<CheckIcon />}
+                          onClick={() => {
+                            setEditRowIndex(null);
+                          }}
+                        />
+                      )}
                     </Td>
                     <Td>
                       <Button variant="outline" colorScheme="red">
@@ -201,10 +396,17 @@ export default function Page({ params }: ShiftReviewPageProps) {
               <Tfoot>
                 <Tr>
                   <Th>
-                    <Button colorScheme="teal" size="lg">
+                    <Button
+                      colorScheme="teal"
+                      size="lg"
+                      onClick={() => {
+                        handleSave();
+                      }}
+                    >
                       Confirm and Save
                     </Button>
                   </Th>
+                  <Th></Th>
                   <Th></Th>
                   <Th></Th>
                   <Th>
