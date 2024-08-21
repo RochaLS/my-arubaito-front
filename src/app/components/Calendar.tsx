@@ -10,6 +10,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { useMemo, useState } from "react";
 import { Shift } from "../util/fetchShifts";
+import { convertTime } from "../util/date";
 
 interface MyCalendarProps {
   shifts: Shift[];
@@ -96,7 +97,9 @@ function MyCalendar({ shifts }: MyCalendarProps) {
     const [endHour, endMinute] = endTime.split(":").map(Number);
 
     return {
-      title: shiftType,
+      title: `${shiftType ? shiftType + " |" : ""}  ${convertTime(
+        shift.startTime
+      )} - ${convertTime(shift.endTime)}`,
       start: new Date(
         startYear,
         startMonth - 1,
