@@ -202,9 +202,10 @@ export default function Page({ params }: ShiftReviewPageProps) {
       </Text>
       <Center>
         {isMobile ? (
-          <Box m={5} mt={10} bgColor="gray.100" boxShadow="sm" w="full">
+          <Box m={5} mt={10} bgColor="gray.100" w="full">
             {paginatedShifts.map((shift: JobShift, index: number) => (
               <Flex
+                boxShadow="sm"
                 key={shift.id}
                 direction="column"
                 p={4}
@@ -342,6 +343,16 @@ export default function Page({ params }: ShiftReviewPageProps) {
                 Confirm
               </Button>
             </Flex>
+            {showErrorMsg && (
+              <Text
+                textAlign="center"
+                my={2}
+                color="red.500"
+                textTransform="none"
+              >
+                Something went wrong when saving the shifts. Try again later.
+              </Text>
+            )}
           </Box>
         ) : (
           <TableContainer
