@@ -33,6 +33,8 @@ import { convertTime } from "@/app/util/date";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { ErrorBanner } from "@/app/components/ErrorBanner";
 import { Copyright } from "@/app/components/Copyright";
+import { FaWandMagicSparkles } from "react-icons/fa6";
+import { ImportButton } from "@/app/components/ImportButton";
 
 interface PageProps {
   params: {
@@ -154,6 +156,16 @@ export default function Page({ params }: PageProps) {
       <Heading pt={10} textAlign="center">
         My shifts
       </Heading>
+      {!isMobile ? (
+        <Flex justify="right" mx="10%">
+          <ImportButton />
+        </Flex>
+      ) : (
+        <Flex justify="center" mt={5}>
+          <ImportButton />
+        </Flex>
+      )}
+
       <Center>
         {isMobile ? (
           <Box

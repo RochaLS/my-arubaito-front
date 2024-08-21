@@ -7,11 +7,14 @@ import {
   Skeleton,
   Link,
   Button,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { LuSunrise } from "react-icons/lu";
 import { ListShiftCard } from "./ListShiftCard";
 import { Shift } from "../util/fetchShifts";
 import NextLink from "next/link";
+import { ImportButton } from "./ImportButton";
+import { FaWandMagicSparkles } from "react-icons/fa6";
 
 interface ListBoxProps {
   shifts: Shift[];
@@ -21,6 +24,8 @@ interface ListBoxProps {
 
 export function ListBox({ shifts, isLoaded, currentUserId }: ListBoxProps) {
   const maxShiftsToDisplay = 5;
+
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const findNextShift = (shifts: Shift[]) => {
     const currentDate = new Date();
@@ -39,9 +44,19 @@ export function ListBox({ shifts, isLoaded, currentUserId }: ListBoxProps) {
       mt={0}
       p={5}
     >
-      <Flex mb={5} justify="right">
+      <Flex mb={5} justify={isMobile ? "center" : "right"}>
+        {isMobile && (
+          <Box my={5}>
+            <Link as={NextLink} href={`${currentUserId}/shifts/add-from-file`}>
+              <Button colorScheme="teal" rightIcon={<FaWandMagicSparkles />}>
+                Import Schedule
+              </Button>
+            </Link>
+          </Box>
+        )}
+
         <Link as={NextLink} href={`${currentUserId}/shifts/add`}>
-          <Button my={[5, 0]} colorScheme="teal">
+          <Button ml={4} my={[5, 0]} colorScheme="teal">
             Add shift
           </Button>
         </Link>

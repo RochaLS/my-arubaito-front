@@ -10,6 +10,7 @@ import {
   Button,
   Link,
   HStack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { ShiftBox } from "../components/ShiftBox";
 import { ListBox } from "../components/ListBox";
@@ -20,6 +21,8 @@ import { ErrorBanner } from "../components/ErrorBanner";
 import { Copyright } from "../components/Copyright";
 import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from "date-fns";
 import { Shift } from "../util/fetchShifts";
+import { ImportButton } from "../components/ImportButton";
+import { FaWandMagicSparkles } from "react-icons/fa6";
 
 interface PageProps {
   params: {
@@ -75,6 +78,8 @@ export default function Page({ params }: PageProps) {
   const [activeFilter, setActiveFilter] = useState("all");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -160,7 +165,7 @@ export default function Page({ params }: PageProps) {
           <Heading m={[5, 10]} textAlign="center">
             Dashboard
           </Heading>
-          <Flex flexDir="row" justify="left" mx={[5, 5, 5, 10]}>
+          <Flex flexDir="row" justify="space-between" mx={[5, 5, 5, 10]}>
             <HStack>
               <Button
                 colorScheme="teal"
@@ -211,6 +216,13 @@ export default function Page({ params }: PageProps) {
                 Add shift
               </Button>
             </Link> */}
+            {!isMobile && (
+              <Link as={NextLink} href={`${id}/shifts/add-from-file`}>
+                <Button colorScheme="teal" rightIcon={<FaWandMagicSparkles />}>
+                  Import Schedule
+                </Button>
+              </Link>
+            )}
           </Flex>
 
           <Flex flexDir={["column", "row"]}>
