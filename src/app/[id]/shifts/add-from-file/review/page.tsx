@@ -59,6 +59,7 @@ export default function Page({ params }: ShiftReviewPageProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [paginatedShifts, setPaginatedShifts] = useState<JobShift[]>([]);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showErrorMsg, setShowErrorMsg] = useState<boolean>(false);
   const itemsPerPage = isMobile ? shifts.length : 10;
 
   const [editShiftId, setEditShiftId] = useState<string | null>(null);
@@ -170,9 +171,13 @@ export default function Page({ params }: ShiftReviewPageProps) {
       if (response.ok) {
         setIsSubmitting(false);
         router.push(`/${id}`);
+      } else {
+        setShowErrorMsg(true);
+        setIsSubmitting(false);
       }
     } catch (error) {
       setIsSubmitting(false);
+      setShowErrorMsg(true);
       console.log(error);
     }
   };
@@ -487,6 +492,12 @@ export default function Page({ params }: ShiftReviewPageProps) {
                     >
                       Confirm and Save
                     </Button>
+                    {showErrorMsg && (
+                      <Text my={2} color="red.500" textTransform="none">
+                        Something went wrong when saving the shifts. Try again
+                        later.
+                      </Text>
+                    )}
                   </Th>
                   <Th></Th>
                   <Th></Th>
