@@ -41,7 +41,7 @@ interface PageProps {
 }
 
 export interface JobShift {
-  id: number;
+  id: number | string;
   startDate: string;
   startTime: string;
   endDate: string;
@@ -205,7 +205,9 @@ export default function Page({ params }: PageProps) {
                       colorScheme="red"
                       size="sm"
                       onClick={() => {
-                        handleOnClick(shift.id);
+                        if (typeof shift.id === "number") {
+                          handleOnClick(shift.id);
+                        }
                       }}
                       isDisabled={isSubmittingShiftId === shift.id}
                       isLoading={isSubmittingShiftId === shift.id}
@@ -297,7 +299,9 @@ export default function Page({ params }: PageProps) {
                           variant="outline"
                           colorScheme="red"
                           onClick={() => {
-                            handleOnClick(shift.id);
+                            if (typeof shift.id === "number") {
+                              handleOnClick(shift.id);
+                            }
                           }}
                           isDisabled={isSubmittingShiftId === shift.id}
                           isLoading={isSubmittingShiftId === shift.id}
