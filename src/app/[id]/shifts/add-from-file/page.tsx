@@ -76,13 +76,28 @@ export default function Page({ params }: ShiftAddFromFilePageProps) {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/process-image`,
+        `${process.env.NEXT_PUBLIC_API_URL}/${id}/process-image`,
         {
           method: "POST",
           body: formData,
           credentials: "include",
         }
       );
+
+      if (response.status === 429) {
+        const errorData = await response.json();
+        const resetDate = errorData.resetDate
+          ? new Date(errorData.resetDate)
+          : null;
+        const resetDateStr = resetDate
+          ? resetDate.toLocaleDateString()
+          : "unknown date";
+        setIsSubmitting(false);
+        setErrorMessage(
+          `You've reached your free limit of 15 monthly imports. Please wait until ${resetDateStr} for your limit to reset.`
+        );
+        return;
+      }
 
       if (!response.ok) {
         throw new Error("File upload failed");
