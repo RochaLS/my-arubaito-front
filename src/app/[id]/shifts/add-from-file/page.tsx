@@ -107,16 +107,19 @@ export default function Page({ params }: ShiftAddFromFilePageProps) {
 
       response.json().then(async (data) => {
         const text = data.candidates[0].content.parts[0].text;
+        console.log(text);
 
         const jsonData = JSON.parse(text.replace(/^```json\n|\n```$/g, ""));
         const shifts = jsonData.shifts;
+
+        console.log(shifts);
 
         const formattedShifts = shifts
           .map((item: any) => {
             const year = new Date().getFullYear(); // Use current year
 
             // Ensure month and day values are valid
-            const month = new Date().getMonth();
+            const month = parseInt(item.month, 10) - 1; // Gemini api returns month from 1 - 12, so we need to do -1 here.
             const day = parseInt(item.date, 10);
 
             if (
