@@ -194,11 +194,11 @@ export default function Page({ params }: ShiftReviewPageProps) {
         Review Shifts
       </Heading>
       <Text fontSize="xl" mt={10} mx="10%">
-        Our AI has processed and extracted your work schedule information.
-        Please take a look at the details to confirm everything is correct. Your
-        shifts are listed below, showing the start and end times, as well as the
-        dates. If you spot any discrepancies or need to make adjustments, you
-        can edit or remove shifts as needed.
+        We processed and extracted your work schedule information. Please take a
+        look at the details to confirm everything is correct. Your shifts are
+        listed below, showing the start and end times, as well as the dates. If
+        you spot any discrepancies or need to make adjustments, you can edit or
+        remove shifts as needed.
       </Text>
       <Center>
         {isMobile ? (
