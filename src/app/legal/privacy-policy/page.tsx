@@ -129,8 +129,8 @@ export default function Page() {
           schedule uploaded images to improve their products.
         </Text>
         <Text mt="2">
-          For more information we encourage you to review the "Data Use for Paid
-          Services" section of Google&apos;s{" "}
+          For more information we encourage you to review the &quot;Data Use for
+          Paid Services&quot; section of Google&apos;s{" "}
           <a
             style={{ color: "teal", textDecoration: "underline" }}
             href="https://ai.google.dev/gemini-api/terms"
