@@ -62,7 +62,31 @@ export default function Page() {
         </Text>
 
         <Heading as="h2" size="md" mt="6">
-          5. Modifications to Service
+          5. AI Import Schedule Functionality
+        </Heading>
+        <Text mt="2">
+          My Arubaito offers an AI import schedule functionality that allows
+          users to upload files, such as images and text, to automate the
+          process of adding work shifts to the application. By using this
+          functionality, you acknowledge and agree that any uploaded files will
+          be sent to Google for processing through their Gemini API.
+        </Text>
+        <Text mt="2">
+          We do not retain the uploaded files after processing, but Google may
+          retain such data according to their privacy policy. You are
+          responsible for reviewing the AI-generated schedules for accuracy. My
+          Arubaito is not liable for any errors, omissions, or inaccuracies that
+          may occur in the AI-generated data.
+        </Text>
+        <Text mt="2">
+          By utilizing this feature, you consent to the processing of your data
+          by Google and agree to be bound by their privacy policy. If you do not
+          agree to these terms, you may opt-out by manually entering your
+          schedule data.
+        </Text>
+
+        <Heading as="h2" size="md" mt="6">
+          6. Modifications to Service
         </Heading>
         <Text mt="2">
           We reserve the right to modify or discontinue, temporarily or
@@ -71,7 +95,7 @@ export default function Page() {
         </Text>
 
         <Heading as="h2" size="md" mt="6">
-          6. Termination
+          7. Termination
         </Heading>
         <Text mt="2">
           We may terminate or suspend your account and bar access to the Service
@@ -81,7 +105,7 @@ export default function Page() {
         </Text>
 
         <Heading as="h2" size="md" mt="6">
-          7. Governing Law
+          8. Governing Law
         </Heading>
         <Text mt="2">
           These Terms shall be governed and construed in accordance with the
@@ -89,7 +113,7 @@ export default function Page() {
         </Text>
 
         <Heading as="h2" size="md" mt="6">
-          8. Contact Us
+          9. Contact Us
         </Heading>
         <Text mt="2">
           If you have any questions about these Terms, please contact us at

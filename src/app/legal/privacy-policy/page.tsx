@@ -102,7 +102,55 @@ export default function Page() {
         </UnorderedList>
 
         <Heading as="h2" size="md" mt="6">
-          7. Children&apos;s Online Privacy Protection Act (COPPA)
+          7. AI Import Schedule Functionality
+        </Heading>
+        <Text mt="2">
+          By using the AI import schedule functionality, you acknowledge and
+          consent that any uploaded files, including images and text, are sent
+          to Google for processing. This processing is handled through Google's
+          Gemini API.
+        </Text>
+        <Text mt="2">
+          Please refer to Google's{" "}
+          <a
+            style={{ color: "teal", textDecoration: "underline" }}
+            href="https://support.google.com/gemini/answer/13594961?hl=en#your_data"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Gemini&apos;s Privacy Policy
+          </a>{" "}
+          for more information on how your data is handled during this process.
+          Note that while we do not retain the files after processing, Google
+          may retain data according to their policies.
+        </Text>
+        <Text mt="2">
+          We use Gemini&apos;s paid plan so Google will not use your work
+          schedule uploaded images to improve their products.
+        </Text>
+        <Text mt="2">
+          For more information we encourage you to review the "Data Use for Paid
+          Services" section of Google's{" "}
+          <a
+            style={{ color: "teal", textDecoration: "underline" }}
+            href="https://ai.google.dev/gemini-api/terms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Gemini API Terms of Service
+          </a>
+          .
+        </Text>
+        <Text mt="2">
+          You may opt out of using the AI functionality and manually input your
+          schedule instead. However, please be aware that the AI-generated
+          schedules may contain inaccuracies, and you should review them
+          carefully. We are not liable for any errors or omissions in the
+          AI-generated data.
+        </Text>
+
+        <Heading as="h2" size="md" mt="6">
+          8. Children&apos;s Online Privacy Protection Act (COPPA)
         </Heading>
         <Text mt="2">
           Our Service is not directed to children under the age of 13. We do not
@@ -113,7 +161,7 @@ export default function Page() {
         </Text>
 
         <Heading as="h2" size="md" mt="6">
-          8. Changes to This Privacy Policy
+          9. Changes to This Privacy Policy
         </Heading>
         <Text mt="2">
           We may update our Privacy Policy from time to time. We will notify you
