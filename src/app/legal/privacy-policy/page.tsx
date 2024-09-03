@@ -107,11 +107,11 @@ export default function Page() {
         <Text mt="2">
           By using the AI import schedule functionality, you acknowledge and
           consent that any uploaded files, including images and text, are sent
-          to Google for processing. This processing is handled through Google's
-          Gemini API.
+          to Google for processing. This processing is handled through
+          Google&apos;s Gemini API.
         </Text>
         <Text mt="2">
-          Please refer to Google's{" "}
+          Please refer to Google&apos;s{" "}
           <a
             style={{ color: "teal", textDecoration: "underline" }}
             href="https://support.google.com/gemini/answer/13594961?hl=en#your_data"
@@ -130,7 +130,7 @@ export default function Page() {
         </Text>
         <Text mt="2">
           For more information we encourage you to review the "Data Use for Paid
-          Services" section of Google's{" "}
+          Services" section of Google&apos;s{" "}
           <a
             style={{ color: "teal", textDecoration: "underline" }}
             href="https://ai.google.dev/gemini-api/terms"
