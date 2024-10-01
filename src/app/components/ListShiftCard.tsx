@@ -16,7 +16,7 @@ export function ListShiftCard({ shift, isLoaded }: ListShiftCardProps) {
     <Flex m={5} boxShadow="sm" justify="space-between" align="center">
       <Box>
         <Text fontSize="xl">{dateString}</Text>
-        <Text color="teal.500" fontSize="xl">
+        <Text color={shift.isHoliday ? "yellow.500" : "teal.500"} fontSize="xl">
           {convertTime(shift.startTime)} - {convertTime(shift.endTime)}
         </Text>
       </Box>

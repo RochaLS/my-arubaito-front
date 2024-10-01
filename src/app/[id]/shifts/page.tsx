@@ -23,6 +23,7 @@ import {
   IconButton,
   FormControl,
   Input,
+  Icon,
 } from "@chakra-ui/react";
 import { Navbar } from "../../components/Navbar";
 import NextLink from "next/link";
@@ -32,8 +33,7 @@ import { formatDate } from "@/app/util/dateFormatting";
 import { convertTime } from "@/app/util/date";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { ErrorBanner } from "@/app/components/ErrorBanner";
-import { Copyright } from "@/app/components/Copyright";
-import { FaWandMagicSparkles } from "react-icons/fa6";
+import { TbMoneybag } from "react-icons/tb";
 import { ImportButton } from "@/app/components/ImportButton";
 
 interface PageProps {
@@ -49,6 +49,7 @@ export interface JobShift {
   endDate: string;
   endTime: string;
   shiftType: string;
+  isHoliday: boolean;
   job: {
     id: string;
   };
@@ -187,6 +188,10 @@ export default function Page({ params }: PageProps) {
                 <Flex justify="space-between" mb={2}>
                   <Box>
                     <Skeleton isLoaded={isLoaded}>
+                      {shift.isHoliday && (
+                        <Icon as={TbMoneybag} boxSize={5} color="teal" />
+                      )}
+
                       <Text fontSize="lg">{formatDate(shift.startDate)}</Text>
                       <Text fontSize="lg">
                         {convertTime(shift.startTime)} -{" "}
@@ -289,7 +294,13 @@ export default function Page({ params }: PageProps) {
                     </Td>
                     <Td>
                       <Skeleton isLoaded={isLoaded}>
-                        {formatDate(shift.startDate)}
+                        <Flex alignItems="center" justify="space-around">
+                          {shift.isHoliday && (
+                            <Icon as={TbMoneybag} boxSize={5} color="teal" />
+                          )}
+
+                          {formatDate(shift.startDate)}
+                        </Flex>
                       </Skeleton>
                     </Td>
                     <Td>

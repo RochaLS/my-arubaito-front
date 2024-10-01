@@ -62,6 +62,7 @@ export default function Page({ params }: ShiftEditPageProps) {
             endDate: data.date,
             endTime: data.endTime,
             shiftType: data.shiftType,
+            isHoliday: data.isHoliday,
             job_id: data.job,
             worker_id: id,
           }),

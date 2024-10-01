@@ -44,6 +44,7 @@ export default function Page({ params }: ShiftAddPageProps) {
   const handleShiftSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsSubmitting(true);
     try {
+      console.log(data.isHoliday);
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/shift/add`,
         {
@@ -57,6 +58,7 @@ export default function Page({ params }: ShiftAddPageProps) {
             endDate: data.date,
             endTime: data.endTime,
             shiftType: data.shiftType,
+            isHoliday: data.isHoliday,
             job_id: data.job,
             worker_id: id,
           }),

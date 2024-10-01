@@ -5,6 +5,7 @@ export interface Shift {
   endDate: string;
   endTime: string;
   shiftType: string;
+  isHoliday: boolean;
   job_id: string;
 }
 

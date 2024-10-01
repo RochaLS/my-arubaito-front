@@ -9,12 +9,17 @@ import {
   Center,
   Button,
   Box,
-  FormHelperText,
+  Checkbox,
 } from "@chakra-ui/react";
 import { Job } from "../util/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import { shiftSchema } from "../util/validationSchemas";
 
 interface FieldData {
@@ -24,6 +29,7 @@ interface FieldData {
   startTime?: string;
   endTime?: string;
   shiftType?: string;
+  isHoliday?: boolean;
   job?: {
     id: string;
     title?: string;
@@ -48,6 +54,7 @@ export function ShiftForm({
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(shiftSchema),
@@ -70,8 +77,8 @@ export function ShiftForm({
       }
 
       setValue("endDate", shiftData.endDate ?? "");
-
       setValue("job", shiftData.job?.id.toString() ?? "");
+      setValue("isHoliday", shiftData.isHoliday ?? false);
     }
   }, [shiftData, isEditForm, setValue]);
 
@@ -161,6 +168,22 @@ export function ShiftForm({
                 {errors.shiftType && errors.shiftType.message?.toString()}
               </FormErrorMessage>
             </FormControl>
+            <Controller
+              name="isHoliday"
+              control={control}
+              defaultValue={false} // Ensure you provide a default value
+              render={({ field }) => (
+                <Checkbox
+                  {...field} // Spread the field props onto the Checkbox
+                  mt={5}
+                  size="lg"
+                  colorScheme="teal"
+                  isChecked={field.value} // Control the checkbox state
+                >
+                  Holiday (Time and a Half)
+                </Checkbox>
+              )}
+            />
             <FormControl isInvalid={!!errors.job}>
               <FormLabel mt={5}>Job</FormLabel>
               <Select
