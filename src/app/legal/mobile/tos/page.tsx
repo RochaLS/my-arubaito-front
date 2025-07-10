@@ -17,7 +17,7 @@ export default function Page() {
                 1. Acceptance of Terms
             </Heading>
             <Text mt="2">
-                By accessing and using Baito (the “Service”), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by these Terms of Use, you are not authorized to use or access the Service.
+                By accessing and using Baito (the &ldquo;Service&rdquo;), you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by these Terms of Use, you are not authorized to use or access the Service.
             </Text>
 
             <Heading as="h2" size="md" mt="6">
@@ -62,7 +62,7 @@ export default function Page() {
                 By utilizing this feature, you consent to the processing of your data by Google and agree to be bound by their privacy policy. If you do not agree to these terms, you may opt-out by manually entering your schedule data.
             </Text>
             <Text mt="2" fontWeight="semibold">
-                Any misuse of the AI feature — including abusive uploads, reverse-engineering attempts, or behavior that disrupts the service — may result in immediate suspension or termination of your account at our sole discretion.
+                Any misuse of the AI feature &mdash; including abusive uploads, reverse-engineering attempts, or behavior that disrupts the service &mdash; may result in immediate suspension or termination of your account at our sole discretion.
             </Text>
 
             <Heading as="h2" size="md" mt="6">
@@ -90,14 +90,14 @@ export default function Page() {
                 9. Contact Us
             </Heading>
             <Text mt="2">
-                If you have any questions about these Terms, please contact us at myarubaito@gmail.com.
+                If you have any questions about these Terms, please contact us at <a href="mailto:myarubaito@gmail.com">myarubaito@gmail.com</a>.
             </Text>
 
             <Heading as="h2" size="md" mt="6">
                 10. Disclaimer of Warranties
             </Heading>
             <Text mt="2">
-                The Service is provided on an "as is" and "as available" basis. We make no warranties, express or implied, and hereby disclaim all implied warranties including, but not limited to, merchantability, fitness for a particular purpose, and non-infringement. We do not guarantee that the Service will be uninterrupted, secure, or error-free.
+                The Service is provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis. We make no warranties, express or implied, and hereby disclaim all implied warranties including, but not limited to, merchantability, fitness for a particular purpose, and non-infringement. We do not guarantee that the Service will be uninterrupted, secure, or error-free.
             </Text>
 
             <Heading as="h2" size="md" mt="6">
