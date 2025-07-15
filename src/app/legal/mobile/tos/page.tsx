@@ -1,7 +1,7 @@
-import { Box, Heading, ListItem, UnorderedList, Text } from "@chakra-ui/react";
+import { Box, Heading, ListItem, UnorderedList, Text, Link } from "@chakra-ui/react";
 
 export default function Page() {
-    const lastUpdated = "July 10, 2025";
+    const lastUpdated = "July 15, 2025";
 
     return (
         <Box padding="4" maxW="3xl" mx="auto">
@@ -50,6 +50,23 @@ export default function Page() {
             </Text>
 
             <Heading as="h2" size="md" mt="6">
+                4.1 Refund Policy
+            </Heading>
+            <Text mt="2">
+                All subscriptions and in-app purchases made through the Baito app are processed and managed by Apple via the App Store. As such, Baito does not handle refunds directly.
+            </Text>
+            <Text mt="2">
+                If you would like to request a refund, please visit Apple’s official support page at{' '}
+                <Link color="teal.500" href="https://support.apple.com/en-ca/HT204084" isExternal>
+                    https://support.apple.com/en-ca/HT204084
+                </Link>{' '}
+                and follow the instructions to submit your request.
+            </Text>
+            <Text mt="2">
+                Please note that refund eligibility is determined solely by Apple, and we have no control over the outcome of such requests.
+            </Text>
+
+            <Heading as="h2" size="md" mt="6">
                 5. AI Import Schedule Functionality
             </Heading>
             <Text mt="2">
@@ -90,7 +107,8 @@ export default function Page() {
                 9. Contact Us
             </Heading>
             <Text mt="2">
-                If you have any questions about these Terms, please contact us at <a href="mailto:myarubaito@gmail.com">myarubaito@gmail.com</a>.
+                If you have any questions about these Terms, please contact us at{' '}
+                <Link href="mailto:support@myarubaito.com">support@myarubaito.com</Link>.
             </Text>
 
             <Heading as="h2" size="md" mt="6">
